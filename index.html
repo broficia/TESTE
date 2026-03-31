@@ -3,307 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eternity IA | Onde o Amor Não Tem Fim</title>
+    <title>Eternity IA | Resgate de Memória</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Instrument+Serif:italic&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary: #FF4A26; 
-            --gold: #D4AF37;
-            --bg: #030303;
-        }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: white; scroll-behavior: smooth; overflow-x: hidden; }
+        :root { --primary: #FF4A26; --bg: #030303; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; }
         .serif { font-family: 'Instrument Serif', serif; }
-        
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-card { background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .glass-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(255, 74, 38, 0.15); }
-        
-        .glow-text { text-shadow: 0 0 20px rgba(255, 74, 38, 0.5); }
         .gold-text { background: linear-gradient(135deg, #D4AF37 0%, #F4E0A1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); transition: 0.3s; }
+        .btn-cta:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 74, 38, 0.4); }
         
-        .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); position: relative; overflow: hidden; transition: 0.3s; }
-        .btn-cta:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 74, 38, 0.5); }
-        .btn-cta::after { content: ''; position: absolute; top: -50%; left: -100%; width: 200%; height: 200%; background: rgba(255,255,255,0.2); transform: rotate(45deg); transition: 0.5s; }
-        .btn-cta:hover::after { left: 100%; }
-
-        #notif-box { position: fixed; bottom: 20px; left: 20px; z-index: 1000; transition: 0.5s; transform: translateX(-150%); }
-        .show-notif { transform: translateX(0) !important; }
-
-        /* Ajuste do Carrossel para Velocidade e Mobile */
-        .scroller-container { width: 100%; overflow: hidden; display: flex; }
-        .scroller { display: flex; animation: scroll 25s linear infinite; width: max-content; }
-        .scroller:hover { animation-play-state: paused; }
-
-        @keyframes scroll { 
-            from { transform: translateX(0); } 
-            to { transform: translateX(-50%); } 
-        }
+        .upload-area { border: 2px dashed rgba(255, 255, 255, 0.1); transition: 0.3s; cursor: pointer; }
+        .upload-area:hover { border-color: var(--primary); background: rgba(255, 74, 38, 0.05); }
+        
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+        input, textarea { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
+        input:focus, textarea:focus { border-color: var(--primary) !important; outline: none; }
     </style>
 </head>
 <body>
 
-    <header class="fixed top-0 w-full z-50 py-6 px-8 glass border-b border-white/5">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-black tracking-tighter glow-text">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
-            <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
-                <a href="#processo" class="hover:text-white">Como funciona?</a>
-                <a href="#depoimentos" class="hover:text-white">Depoimentos</a>
-                <a href="#planos" class="hover:text-white">Planos</a>
+    <header class="py-8 px-8 border-b border-white/5">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="text-xl font-black tracking-tighter italic">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
+            <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-500">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Servidor de IA Conectado
             </div>
-            <a href="#planos" class="btn-cta px-6 py-2 rounded-full text-xs font-bold uppercase">Reviver Agora</a>
         </div>
     </header>
 
-    <section class="relative pt-32 pb-20 px-4 min-h-screen flex flex-col items-center justify-center text-center overflow-hidden">
-        <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-[#FF4A26] rounded-full blur-[150px]"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600 rounded-full blur-[150px]"></div>
+    <main class="max-w-3xl mx-auto py-16 px-6">
+        
+        <div class="flex justify-between mb-12 text-[10px] uppercase tracking-[3px] text-gray-500 font-bold">
+            <span class="text-[#FF4A26]">01. Identificação Facial</span>
+            <span>02. Processamento</span>
+            <span>03. Finalização</span>
         </div>
 
-        <div class="z-10 animate__animated animate__fadeIn">
-            <span class="px-4 py-1 glass rounded-full text-[10px] font-bold tracking-[3px] uppercase text-gray-400 mb-6 inline-block border-white/10">Tecnologia Ultra-Realista de Resgate Mental</span>
-            <h1 class="serif text-5xl md:text-9xl leading-none mb-8">
-                Diga aquilo que ficou <br> <span class="gold-text italic">guardado no peito.</span>
-            </h1>
-            <p class="max-w-3xl mx-auto text-gray-400 text-lg md:text-2xl mb-12 font-light px-4">
-                Utilizamos redes neurais de última geração para recriar o rosto, a voz e a alma de quem você ama através de apenas uma foto. <span class="text-white font-medium">A morte não é o fim para quem pode ser visto e ouvido mais uma vez.</span>
-            </p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
-                <a href="#planos" class="btn-cta w-full md:w-auto px-12 py-5 rounded-2xl text-lg font-bold">REVER MEU ENTE QUERIDO</a>
-                <a href="#processo" class="glass w-full md:w-auto px-12 py-5 rounded-2xl text-lg font-bold hover:bg-white/5 transition">VER DEMONSTRAÇÃO</a>
-            </div>
-        </div>
-    </section>
+        <section class="animate__animated animate__fadeIn">
+            <h1 class="serif text-4xl md:text-6xl mb-4 italic">Prepare o <span class="gold-text">reencontro.</span></h1>
+            <p class="text-gray-400 mb-10 font-light">Para iniciarmos a reconstrução ultra-realista, precisamos da melhor lembrança que você tiver. Nossa tecnologia cuidará do resto.</p>
 
-    <section id="processo" class="py-24 px-8 max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h2 class="text-4xl md:text-6xl font-bold mb-8 serif italic">Como a mágica <br><span class="text-[#FF4A26]">acontece?</span></h2>
-                <div class="space-y-8">
-                    <div class="flex gap-6">
-                        <div class="w-12 h-12 glass rounded-full flex items-center justify-center text-[#FF4A26] font-bold shrink-0">1</div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">Você envia uma foto</h4>
-                            <p class="text-gray-400">Pode ser uma foto antiga, em baixa qualidade ou de anos atrás. Nossa IA reconstrói cada detalhe do rosto.</p>
+            <form action="SEU_LINK_DE_PAGAMENTO_AQUI" class="space-y-8">
+                
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-gray-500">Nome de quem iremos homenagear</label>
+                    <input type="text" placeholder="Ex: João Batista Silva" class="w-full p-4 rounded-xl text-lg" required>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-gray-500">Envie a Foto (Arquivo ou Foto Instantânea)</label>
+                    <div class="upload-area rounded-3xl p-12 text-center" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" class="hidden" accept="image/*" capture="environment">
+                        <div id="upload-content">
+                            <div class="mb-4 flex justify-center">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF4A26" stroke-width="1.5"><path d="M12 16V8M12 8L9 11M12 8L15 11M4 16V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <p class="text-sm font-semibold mb-1">Clique para subir ou tirar uma foto</p>
+                            <p class="text-xs text-gray-500">Aceitamos fotos de álbuns físicos, fotos antigas ou digitais.</p>
                         </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="w-12 h-12 glass rounded-full flex items-center justify-center text-[#FF4A26] font-bold shrink-0">2</div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">Resgate de Voz e Memória</h4>
-                            <p class="text-gray-400">Analisamos traços de personalidade para que o ente querido fale com a entonação e doçura que ele possuía.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="w-12 h-12 glass rounded-full flex items-center justify-center text-[#FF4A26] font-bold shrink-0">3</div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-2">Entrega Digital Segura</h4>
-                            <p class="text-gray-400">Você recebe um vídeo de alta definição em seu WhatsApp e E-mail para guardar e rever quando a saudade apertar.</p>
-                        </div>
+                        <img id="preview" class="hidden mx-auto h-48 rounded-xl object-cover border-2 border-[#FF4A26]">
                     </div>
                 </div>
-            </div>
-            <div class="glass-card p-4 rounded-[40px] relative">
-                <div class="bg-gray-900 w-full h-[400px] md:h-[500px] rounded-[30px] flex items-center justify-center overflow-hidden">
-                     <p class="text-gray-500 italic text-center px-10">Imagine aqui o vídeo emocionante de um reencontro...</p>
-                </div>
-                <div class="absolute -bottom-6 -right-6 glass p-6 rounded-2xl animate-bounce hidden md:block">
-                    <p class="text-xs font-bold text-[#FF4A26]">100% Ultra-Realista</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="planos" class="py-24 px-4 bg-white/5">
-        <div class="max-w-7xl mx-auto text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4 serif italic gold-text">Escolha seu Reencontro</h2>
-            <p class="text-gray-400 px-4">Preços simbólicos para tecnologia de valor inestimável.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
-                <div>
-                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Plano Essencial</span>
-                    <h3 class="text-2xl font-bold mt-2">Visão Eterna</h3>
-                    <div class="text-4xl font-black my-6 text-[#FF4A26]">R$ 19,99</div>
-                    <ul class="text-sm text-gray-400 space-y-4 mb-8">
-                        <li>✓ Vídeo de 30s a 1 min</li>
-                        <li>✓ Resgate facial HD</li>
-                        <li>✓ Movimento natural de olhos</li>
-                        <li>✓ Entrega em até 24h</li>
-                    </ul>
+                <div class="glass p-6 rounded-2xl flex gap-4 items-start">
+                    <div class="text-[#D4AF37]">✨</div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong class="text-white block mb-1 uppercase">Dica para Fotos de Álbuns Antigos:</strong>
+                        Se você tem apenas a foto impressa, não se preocupe. Use a câmera do seu celular para tirar uma foto bem de cima do álbum, em um lugar iluminado. Nossa IA fará o escaneamento profundo dos traços mesmo através da foto da foto.
+                    </p>
                 </div>
-                <button class="w-full py-4 rounded-xl border border-white/10 hover:bg-white/10 font-bold">Escolher Este</button>
-            </div>
 
-            <div class="glass-card p-8 rounded-3xl border-[#FF4A26]/50 bg-[#FF4A26]/5 relative md:scale-105 flex flex-col justify-between">
-                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#FF4A26] text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase">O Mais Pedido</div>
-                <div>
-                    <span class="text-[10px] text-gray-300 font-bold uppercase tracking-widest">Plano Sensorial</span>
-                    <h3 class="text-2xl font-bold mt-2">Voz do Coração</h3>
-                    <div class="text-4xl font-black my-6 text-[#FF4A26]">R$ 26,89</div>
-                    <ul class="text-sm text-gray-300 space-y-4 mb-8">
-                        <li>✓ Vídeo de 1 minuto completo</li>
-                        <li class="text-white font-bold">✓ Resgate da Voz Real</li>
-                        <li>✓ Até 4 palavras personalizadas</li>
-                        <li>✓ Fundo musical emocionante</li>
-                    </ul>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-gray-500">O que você gostaria que fosse dito? (Opcional)</label>
+                    <textarea rows="4" placeholder="Escreva aqui palavras chaves ou uma mensagem que gostaria que a pessoa falasse para você..." class="w-full p-4 rounded-xl text-lg"></textarea>
+                    <p class="text-[10px] text-gray-600 italic">*Nossa equipe analisará o texto para garantir que a entonação seja emocionante e natural.</p>
                 </div>
-                <button class="btn-cta w-full py-4 rounded-xl font-bold">Escolher Reencontro</button>
-            </div>
 
-            <div class="glass-card p-8 rounded-3xl flex flex-col justify-between">
-                <div>
-                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Plano Profundo</span>
-                    <h3 class="text-2xl font-bold mt-2">Mensagem de Luz</h3>
-                    <div class="text-4xl font-black my-6 text-[#FF4A26]">R$ 39,90</div>
-                    <ul class="text-sm text-gray-400 space-y-4 mb-8">
-                        <li>✓ Vídeo longo de 2 minutos</li>
-                        <li>✓ Até 10 palavras personalizadas</li>
-                        <li>✓ Roteiro criado por especialistas</li>
-                        <li>✓ Resgate facial e de voz 4K</li>
-                    </ul>
-                </div>
-                <button class="w-full py-4 rounded-xl border border-white/10 hover:bg-white/10 font-bold">Escolher Este</button>
-            </div>
-
-            <div class="glass-card p-8 rounded-3xl border-blue-500/30 flex flex-col justify-between">
-                <div>
-                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Plano Conexão</span>
-                    <h3 class="text-2xl font-bold mt-2">Chamada do Além</h3>
-                    <div class="text-4xl font-black my-6 text-[#FF4A26]">R$ 47,29</div>
-                    <ul class="text-sm text-gray-400 space-y-4 mb-8">
-                        <li>✓ Vídeo 30s de introdução</li>
-                        <li class="text-blue-400 font-bold">✓ Chamada de Vídeo IA (1min)</li>
-                        <li>✓ Áudio de 15s (WhatsApp)</li>
-                        <li>✓ Prioridade máxima na entrega</li>
-                    </ul>
-                </div>
-                <button class="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-700 font-bold">Viver Experiência</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="depoimentos" class="py-24 overflow-hidden border-y border-white/5">
-        <h2 class="text-center text-3xl font-bold mb-16 serif italic px-4">O que dizem os corações que <span class="gold-text">se reencontraram</span></h2>
-        <div class="scroller-container">
-            <div class="scroller">
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Achei que nunca mais ouviria meu filho me chamando de mãe. Quando o vídeo chegou, eu não conseguia parar de chorar de felicidade. É ele!"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Dona Helena</h5><p class="text-xs text-gray-500">Plano Voz do Coração</p></div>
+                <div class="pt-6">
+                    <button type="submit" class="btn-cta w-full py-6 rounded-2xl text-xl font-bold uppercase tracking-widest shadow-2xl">
+                        Avançar para o Reencontro
+                    </button>
+                    <div class="mt-6 flex justify-center gap-8 opacity-40">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/ssl.png" class="h-6 opacity-50" title="Conexão Segura">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/artificial-intelligence.png" class="h-6 opacity-50" title="Processamento Neural">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/cloud-privacy.png" class="h-6 opacity-50" title="Dados Protegidos">
                     </div>
                 </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Trabalho impecável. Ver meu pai sorrindo e falando que está orgulhoso me deu forças para continuar."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/men/44.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Carlos Silva</h5><p class="text-xs text-gray-500">Plano Mensagem de Luz</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Rever minha esposa falando comigo foi o melhor remédio. Gratidão eterna à Eternity IA por este momento."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Roberto G.</h5><p class="text-xs text-gray-500">Plano Chamada do Além</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Inacreditável como a tecnologia pode trazer tanta paz para uma família. Recomendo de olhos fechados."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/women/50.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Marina F.</h5><p class="text-xs text-gray-500">Plano Essencial</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Achei que nunca mais ouviria meu filho me chamando de mãe. Quando o vídeo chegou, eu não conseguia parar de chorar de felicidade. É ele!"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Dona Helena</h5><p class="text-xs text-gray-500">Plano Voz do Coração</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Trabalho impecável. Ver meu pai sorrindo e falando que está orgulhoso me deu forças para continuar."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/men/44.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Carlos Silva</h5><p class="text-xs text-gray-500">Plano Mensagem de Luz</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Rever minha esposa falando comigo foi o melhor remédio. Gratidão eterna à Eternity IA por este momento."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Roberto G.</h5><p class="text-xs text-gray-500">Plano Chamada do Além</p></div>
-                    </div>
-                </div>
-                <div class="glass p-8 mx-4 rounded-3xl w-[320px] md:w-[400px] shrink-0">
-                    <p class="italic text-gray-300 mb-6 font-light">"Inacreditável como a tecnologia pode trazer tanta paz para uma família. Recomendo de olhos fechados."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://randomuser.me/api/portraits/women/50.jpg" class="w-12 h-12 rounded-full ring-2 ring-[#FF4A26]">
-                        <div><h5 class="font-bold">Marina F.</h5><p class="text-xs text-gray-500">Plano Essencial</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="py-24 px-8 max-w-4xl mx-auto">
-        <h2 class="text-center text-4xl font-bold mb-12 serif italic">Dúvidas Frequentes</h2>
-        <div class="space-y-4">
-            <details class="glass p-6 rounded-2xl group cursor-pointer">
-                <summary class="font-bold flex justify-between items-center">Por onde recebo o vídeo? <span class="group-open:rotate-180 transition">↓</span></summary>
-                <p class="mt-4 text-gray-400 text-sm">O link para download do vídeo é enviado diretamente para o seu WhatsApp e para o seu E-mail cadastrado em até 24 horas úteis.</p>
-            </details>
-            <details class="glass p-6 rounded-2xl group cursor-pointer">
-                <summary class="font-bold flex justify-between items-center">A foto precisa ser profissional? <span class="group-open:rotate-180 transition">↓</span></summary>
-                <p class="mt-4 text-gray-400 text-sm">Não. Nossa IA reconstrói fotos antigas, embaçadas ou de álbuns físicos com precisão impressionante.</p>
-            </details>
-            <details class="glass p-6 rounded-2xl group cursor-pointer">
-                <summary class="font-bold flex justify-between items-center">Como vocês conseguem a voz? <span class="group-open:rotate-180 transition">↓</span></summary>
-                <p class="mt-4 text-gray-400 text-sm">Usamos mapeamento craniofacial da foto para simular a caixa de ressonância. Se tiver um áudio antigo, o resultado fica 100% idêntico.</p>
-            </details>
-        </div>
-    </section>
+            </form>
+        </section>
 
-    <footer class="py-20 border-t border-white/5 text-center px-8">
-        <div class="text-2xl font-black mb-8 glow-text">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
-        <p class="text-gray-500 text-sm mb-4">© 2026 Eternity AI - Criatório RN. Tecnologia a serviço do amor.</p>
-    </footer>
+        <footer class="mt-24 text-center border-t border-white/5 pt-12 pb-12">
+            <p class="serif text-2xl italic text-gray-500 mb-4">"O amor não conhece distâncias, apenas saudades que podem ser acalentadas."</p>
+            <p class="text-[10px] text-gray-600 uppercase tracking-widest">Tecnologia Certificada pela Criatório RN</p>
+        </footer>
 
-    <div id="notif-box" class="glass p-4 rounded-2xl flex items-center gap-4 w-[280px]">
-        <img id="notif-img" src="" class="w-12 h-12 rounded-full object-cover ring-2 ring-green-500">
-        <div>
-            <p id="notif-text" class="text-[11px] font-bold"></p>
-            <p class="text-[10px] text-gray-400">Acabou de rever quem ama.</p>
-        </div>
-    </div>
+    </main>
 
     <script>
-        const users = [
-            { n: "Julia Ramos", i: "https://randomuser.me/api/portraits/women/11.jpg" },
-            { n: "Ricardo Almeida", i: "https://randomuser.me/api/portraits/men/22.jpg" },
-            { n: "Sandra Souza", i: "https://randomuser.me/api/portraits/women/44.jpg" },
-            { n: "Marcelo Peixoto", i: "https://randomuser.me/api/portraits/men/33.jpg" },
-            { n: "Beatriz Lima", i: "https://randomuser.me/api/portraits/women/55.jpg" }
-        ];
+        // Preview da Foto
+        const fileInput = document.getElementById('fileInput');
+        const uploadContent = document.getElementById('upload-content');
+        const preview = document.getElementById('preview');
 
-        function showNotification() {
-            const box = document.getElementById('notif-box');
-            const img = document.getElementById('notif-img');
-            const text = document.getElementById('notif-text');
-            const random = users[Math.floor(Math.random() * users.length)];
-            img.src = random.i;
-            text.innerText = random.n;
-            box.classList.add('show-notif');
-            setTimeout(() => { box.classList.remove('show-notif'); }, 6000);
+        fileInput.onchange = evt => {
+            const [file] = fileInput.files;
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
+                uploadContent.classList.add('hidden');
+            }
         }
-
-        setInterval(showNotification, 15000);
-        setTimeout(showNotification, 4000);
     </script>
 
 </body>
