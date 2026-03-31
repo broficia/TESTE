@@ -6,179 +6,163 @@
     <title>Eternity IA | Resgate de Memória & Voz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Instrument+Serif:italic&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Instrument+Serif:italic&display=swap" rel="stylesheet">
     
     <style>
         :root { --primary: #FF4A26; --bg: #030303; --gold: #D4AF37; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; }
         .serif { font-family: 'Instrument Serif', serif; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gold-text { background: linear-gradient(135deg, #D4AF37 0%, #F4E0A1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); transition: 0.3s; }
+        .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 74, 38, 0.3); }
         
-        .upload-area { border: 2px dashed rgba(255, 255, 255, 0.1); transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; }
-        .upload-area:hover { border-color: var(--primary); background: rgba(255, 74, 38, 0.05); }
-        
-        input, textarea { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
-        
-        /* Modal Centralizado Mobile e Desktop */
+        /* Estilo de Botão de Upload Ultra Visível */
+        .upload-card { 
+            border: 2px dashed rgba(255, 255, 255, 0.2); 
+            background: rgba(255,255,255,0.02);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .upload-card:hover { 
+            border-color: var(--primary); 
+            background: rgba(255, 74, 38, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Modal Centralizado */
         #loader-overlay { 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.98); 
-            z-index: 9999; 
-            display: none; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 20px;
-            backdrop-filter: blur(25px); 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
+            z-index: 9999; display: none; align-items: center; justify-content: center; 
+            padding: 20px; backdrop-filter: blur(25px); 
         }
         
         .scanner-container {
-            position: relative;
-            width: 240px;
-            height: 240px;
-            border: 1px solid rgba(255, 74, 38, 0.3);
-            border-radius: 24px;
-            overflow: hidden;
+            position: relative; width: 240px; height: 240px;
+            border: 2px solid rgba(255, 74, 38, 0.4); border-radius: 24px; overflow: hidden;
         }
 
         .scanner-line { 
-            width: 100%; 
-            height: 3px; 
-            background: linear-gradient(to right, transparent, var(--primary), transparent);
-            box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
-            position: absolute; 
-            top: 0; 
-            animation: scan 2.5s ease-in-out infinite; 
-            z-index: 10;
+            width: 100%; height: 4px; 
+            background: var(--primary); box-shadow: 0 0 25px var(--primary);
+            position: absolute; top: 0; animation: scan 2.5s ease-in-out infinite; z-index: 10;
         }
         @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
         
-        .loading-bar-container { width: 100%; max-width: 280px; height: 3px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 24px; }
-        .loading-bar-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; box-shadow: 0 0 10px var(--primary); }
+        .loading-bar-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; box-shadow: 0 0 15px var(--primary); }
+
+        /* Notificações flutuantes */
+        #toast {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            transform: translateX(150%); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .show-toast { transform: translateX(0) !important; }
     </style>
 </head>
 <body>
+
+    <div id="toast" class="glass px-6 py-4 rounded-2xl flex items-center gap-4 border-l-4 border-green-500">
+        <div class="bg-green-500/20 p-2 rounded-full text-green-500">✓</div>
+        <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-white">Segurança Ativa</p>
+            <p class="text-[10px] text-gray-400">Seus arquivos estão sendo criptografados.</p>
+        </div>
+    </div>
 
     <div id="loader-overlay">
         <div class="flex flex-col items-center w-full max-w-sm">
             <div class="scanner-container mb-8">
                 <div class="scanner-line"></div>
-                <img id="mini-preview" class="w-full h-full object-cover opacity-40 grayscale">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <img id="mini-preview" class="w-full h-full object-cover opacity-50 grayscale">
+                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
             </div>
-            
-            <div class="text-center space-y-2">
-                <h2 id="loader-status" class="text-lg font-bold uppercase tracking-[4px] text-white">Iniciando Sincronização</h2>
-                <p id="loader-subtext" class="text-[10px] text-gray-500 uppercase tracking-[2px]">Aguarde o processamento dos dados</p>
-            </div>
-
-            <div class="loading-bar-container">
+            <h2 id="loader-status" class="text-xl font-bold uppercase tracking-[4px] text-center">Sincronizando</h2>
+            <p id="loader-subtext" class="text-[11px] text-gray-500 uppercase tracking-[2px] mt-2">Aguarde...</p>
+            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-6">
                 <div id="bar-fill" class="loading-bar-fill"></div>
             </div>
-            
-            <p class="text-[9px] text-gray-600 mt-8 uppercase tracking-[4px] animate-pulse">Criptografia de Ponta-a-Ponta Ativa</p>
         </div>
     </div>
 
     <header class="py-6 px-8 border-b border-white/5">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div class="text-xl font-black tracking-tighter italic">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
-            <div class="text-[9px] uppercase tracking-widest text-gray-500 font-bold flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Conexão Criptografada
+            <div class="text-[9px] font-bold text-gray-400 flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span> AMBIENTE PROTEGIDO
             </div>
         </div>
     </header>
 
     <main class="max-w-3xl mx-auto py-12 px-6">
         
-        <div class="flex justify-between mb-10 text-[9px] uppercase tracking-[3px] text-gray-600 font-bold">
-            <span class="text-[#FF4A26]">01. Coleta de Dados</span>
-            <span>02. Análise Neural</span>
-            <span>03. Reencontro</span>
-        </div>
-
         <section class="animate__animated animate__fadeIn">
-            <h1 class="serif text-4xl md:text-5xl mb-4 italic leading-tight">Resgate a <span class="gold-text">essência.</span></h1>
-            <p class="text-gray-400 mb-10 font-light text-sm md:text-base">Precisamos capturar os traços faciais e a frequência vocal para uma clonagem perfeita. <span class="text-white">Cada detalhe importa.</span></p>
+            <h1 class="serif text-4xl md:text-5xl mb-4 italic leading-tight text-center">Prepare o seu <br><span class="gold-text italic text-5xl md:text-7xl">Reencontro</span></h1>
+            <p class="text-gray-400 mb-10 font-light text-center">Inicie o processo de clonagem facial e vocal enviando as lembranças abaixo.</p>
 
-            <form id="uploadForm" class="space-y-10">
+            <form id="uploadForm" class="space-y-8">
                 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Nome do Ente Querido</label>
-                    <input type="text" id="targetName" placeholder="Como ele(a) se chamava?" class="w-full p-4 rounded-2xl text-lg transition-all" required>
+                    <label class="text-xs font-black uppercase tracking-widest text-white">Quem vamos homenagear?</label>
+                    <input type="text" id="targetName" placeholder="Digite o nome do ente querido" class="w-full p-5 rounded-2xl text-lg font-semibold" required>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">1. Identidade Visual (Foto)</label>
-                    <div class="upload-area rounded-[2rem] p-8 text-center" onclick="document.getElementById('fileInput').click()">
+                    <label class="text-xs font-black uppercase tracking-widest text-white">1. Enviar Foto (Rosto)</label>
+                    <div class="upload-card rounded-3xl p-10 text-center" onclick="document.getElementById('fileInput').click()">
                         <input type="file" id="fileInput" class="hidden" accept="image/*">
                         <div id="upload-content">
-                            <div class="mb-4 flex justify-center opacity-50">
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V8M12 8L9 11M12 8L15 11M4 16V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V16" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
-                            <p class="text-xs font-bold uppercase tracking-widest">Subir Foto ou Álbum</p>
+                            <div class="text-4xl mb-4">📸</div>
+                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique para abrir a câmera ou galeria</p>
+                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Aceitamos fotos antigas de álbuns físicos</p>
                         </div>
-                        <img id="preview" class="hidden mx-auto h-48 rounded-2xl object-cover border border-white/10 shadow-2xl">
+                        <img id="preview" class="hidden mx-auto h-56 rounded-2xl object-cover border-2 border-white/10 shadow-2xl">
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">2. Identidade Vocal (Áudio)</label>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="glass p-6 rounded-2xl border border-white/5 hover:border-[#FF4A26]/30 transition cursor-pointer" onclick="document.getElementById('audioInput').click()">
-                            <input type="file" id="audioInput" class="hidden" accept="audio/*">
-                            <div class="flex items-center gap-4">
-                                <div class="p-3 bg-white/5 rounded-full text-[#FF4A26]">📁</div>
-                                <div>
-                                    <p class="text-xs font-bold uppercase tracking-tighter">Subir Arquivo</p>
-                                    <p class="text-[9px] text-gray-500 uppercase">MP3, WhatsApp, WAV</p>
-                                </div>
-                            </div>
+                    <label class="text-xs font-black uppercase tracking-widest text-white">2. Enviar Áudio (Voz)</label>
+                    <div class="upload-card rounded-3xl p-10 text-center border-[#FF4A26]/30" onclick="document.getElementById('audioInput').click()">
+                        <input type="file" id="audioInput" class="hidden" accept="audio/*">
+                        <div id="audio-upload-content">
+                            <div class="text-4xl mb-4">🎵</div>
+                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique aqui para enviar o áudio</p>
+                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Pode ser um áudio do WhatsApp ou gravação antiga</p>
                         </div>
-                        <div class="glass p-6 rounded-2xl border border-white/5 hover:border-[#FF4A26]/30 transition cursor-pointer relative overflow-hidden group">
-                            <div class="flex items-center gap-4">
-                                <div class="p-3 bg-white/5 rounded-full text-[#FF4A26] group-hover:scale-110 transition">🎤</div>
-                                <div>
-                                    <p class="text-xs font-bold uppercase tracking-tighter">Gravar de outro aparelho</p>
-                                    <p class="text-[9px] text-gray-500 uppercase">Reproduza o áudio perto do seu celular</p>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="audio-preview" class="hidden text-green-500 font-bold text-sm animate-pulse">✓ ÁUDIO SELECIONADO COM SUCESSO</div>
                     </div>
                     
-                    <div class="p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 mt-4">
-                        <p class="text-[10px] text-blue-400 leading-relaxed italic text-center">
-                            "Não possui áudios? Nossa tecnologia <strong>VocalSync</strong> consegue estimar a frequência da voz através do DNA facial e mapeamento ósseo. Se não enviar nada, usaremos a estimativa padrão."
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10 shadow-inner">
+                        <p class="text-xs text-white leading-relaxed font-medium">
+                            <span class="text-[#D4AF37] font-bold block mb-1">⚠️ NÃO POSSUI ÁUDIOS?</span>
+                            Fique tranquilo(a). Nossa tecnologia <span class="text-[#FF4A26]">VocalSync</span> fará o mapeamento ósseo facial para reconstruir a voz original através do DNA da imagem. Se você não enviar nenhum arquivo, usaremos esse processo automaticamente.
                         </p>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-[10px] font-bold uppercase tracking-widest text-gray-500">3. Contexto Emocional</label>
-                    <textarea rows="3" placeholder="Conte-nos brevemente sobre a personalidade dele(a) ou o que gostaria que fosse dito..." class="w-full p-4 rounded-2xl text-base"></textarea>
+                    <label class="text-xs font-black uppercase tracking-widest text-white">3. Uma mensagem especial (Opcional)</label>
+                    <textarea rows="3" placeholder="Escreva algo que ele(a) costumava dizer..." class="w-full p-5 rounded-2xl text-lg font-medium"></textarea>
                 </div>
 
-                <div class="pt-4">
-                    <button type="button" onclick="startNeuralProcess()" class="btn-cta w-full py-6 rounded-3xl text-lg font-bold uppercase tracking-[3px] shadow-2xl">
-                        Gerar Reconstrução Neural
+                <div class="pt-6">
+                    <button type="button" onclick="startNeuralProcess()" class="btn-cta w-full py-7 rounded-3xl text-xl font-black uppercase tracking-[4px]">
+                        GERAR RECONSTRUÇÃO
                     </button>
+                    <p class="text-center text-[10px] text-gray-600 mt-6 uppercase tracking-[3px]">Tecnologia protegida por Criatório RN</p>
                 </div>
             </form>
         </section>
-
-        <footer class="mt-20 text-center border-t border-white/5 pt-10">
-            <p class="text-[9px] text-gray-700 uppercase tracking-[5px]">Eternity IA • Criatório RN</p>
-        </footer>
     </main>
 
     <script>
         const fileInput = document.getElementById('fileInput');
+        const audioInput = document.getElementById('audioInput');
         const preview = document.getElementById('preview');
         const miniPreview = document.getElementById('mini-preview');
         const uploadContent = document.getElementById('upload-content');
+        const audioContent = document.getElementById('audio-upload-content');
+        const audioPreview = document.getElementById('audio-preview');
 
+        // Preview da Foto
         fileInput.onchange = evt => {
             const [file] = fileInput.files;
             if (file) {
@@ -187,13 +171,31 @@
                 miniPreview.src = url;
                 preview.classList.remove('hidden');
                 uploadContent.classList.add('hidden');
+                showToast("Imagem capturada com sucesso!");
             }
+        }
+
+        // Preview do Áudio
+        audioInput.onchange = evt => {
+            const [file] = audioInput.files;
+            if (file) {
+                audioContent.classList.add('hidden');
+                audioPreview.classList.remove('hidden');
+                showToast("Frequência vocal identificada!");
+            }
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('p:last-child').innerText = text;
+            toast.classList.add('show-toast');
+            setTimeout(() => toast.classList.remove('show-toast'), 4000);
         }
 
         function startNeuralProcess() {
             const name = document.getElementById('targetName').value;
             if(!name || !fileInput.files[0]) {
-                alert("Por favor, preencha o nome e envie uma foto para prosseguir.");
+                alert("Por favor, digite o nome e selecione uma foto.");
                 return;
             }
 
@@ -205,12 +207,10 @@
             overlay.style.display = 'flex';
             
             const steps = [
-                { p: 15, t: "Mapeando Vetores Faciais", s: "Localizando 1.200 pontos de expressão..." },
-                { p: 30, t: "Extraindo DNA Vocal", s: "Analisando caixa de ressonância de " + name },
-                { p: 50, t: "Clonagem de Frequência", s: "Ajustando timbre e entonação emocional..." },
-                { p: 70, t: "Sincronização de Memória", s: "Cruzando dados com perfis de personalidade..." },
-                { p: 85, t: "Renderizando Vídeo 4K", s: "Finalizando texturas de pele e olhar..." },
-                { p: 100, t: "Sincronização Completa", s: "Redirecionando para área segura..." }
+                { p: 15, t: "Mapeamento", s: "Localizando traços de " + name },
+                { p: 40, t: "DNA Vocal", s: "Analisando frequência de voz..." },
+                { p: 70, t: "Processamento", s: "Clonando expressões neurais..." },
+                { p: 100, t: "Concluído", s: "Redirecionando para finalização..." }
             ];
 
             let currentStep = 0;
@@ -226,8 +226,11 @@
                         window.location.href = "SEU_LINK_DE_PAGAMENTO_AQUI"; 
                     }, 800);
                 }
-            }, 1500);
+            }, 1800);
         }
+
+        // Mostrar notificação inicial
+        setTimeout(() => showToast("Conexão estável com a rede neural."), 2000);
     </script>
 
 </body>
