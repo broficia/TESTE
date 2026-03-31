@@ -15,21 +15,16 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gold-text { background: linear-gradient(135deg, #D4AF37 0%, #F4E0A1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 74, 38, 0.3); border: none; cursor: pointer; }
-        .btn-cta:hover { transform: scale(1.02); opacity: 0.9; }
-
-        /* CORREÇÃO DE VISIBILIDADE DO TEXTO */
+        
         input, textarea { 
             background: rgba(255, 255, 255, 0.05) !important; 
             border: 1px solid rgba(255, 255, 255, 0.1) !important; 
-            color: #ffffff !important; /* Texto agora é branco visível */
-            caret-color: var(--primary);
+            color: #ffffff !important;
         }
-        input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.3); }
 
         .upload-card { border: 2px dashed rgba(255, 255, 255, 0.2); background: rgba(255,255,255,0.02); transition: 0.3s; cursor: pointer; }
         .upload-card:hover { border-color: var(--primary); background: rgba(255, 74, 38, 0.08); }
 
-        /* Modal de Carregamento e Resultado */
         #loader-overlay { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
             z-index: 9999; display: none; align-items: center; justify-content: center; 
@@ -37,7 +32,7 @@
         }
         
         .scanner-container {
-            position: relative; width: 200px; height: 200px;
+            position: relative; width: 220px; height: 220px;
             border: 2px solid rgba(255, 74, 38, 0.4); border-radius: 24px; overflow: hidden;
         }
 
@@ -48,26 +43,10 @@
         @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
         
         .loading-bar-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; }
-
-        /* Estilo do Card de Sucesso Final */
-        #success-card { display: none; width: 100%; max-width: 450px; text-align: center; }
-
-        #toast {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            transform: translateX(150%); transition: 0.5s;
-        }
-        .show-toast { transform: translateX(0) !important; }
+        #success-card { display: none; width: 100%; max-width: 500px; text-align: center; }
     </style>
 </head>
 <body>
-
-    <div id="toast" class="glass px-6 py-4 rounded-2xl flex items-center gap-4 border-l-4 border-green-500">
-        <div class="bg-green-500/20 p-2 rounded-full text-green-500">✓</div>
-        <div>
-            <p class="text-xs font-bold uppercase tracking-widest text-white">Segurança Ativa</p>
-            <p class="text-[10px] text-gray-400">Proteção de dados biométricos ligada.</p>
-        </div>
-    </div>
 
     <div id="loader-overlay">
         <div id="processing-box" class="flex flex-col items-center w-full max-w-sm">
@@ -77,7 +56,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
             </div>
             <h2 id="loader-status" class="text-xl font-bold uppercase tracking-[4px]">Sincronizando</h2>
-            <p id="loader-subtext" class="text-[11px] text-gray-500 uppercase tracking-[2px] mt-2">Aguarde...</p>
+            <p id="loader-subtext" class="text-[11px] text-gray-500 uppercase tracking-[2px] mt-2">Acessando memórias neurais...</p>
             <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-6">
                 <div id="bar-fill" class="loading-bar-fill"></div>
             </div>
@@ -88,88 +67,112 @@
             <h2 class="serif text-4xl italic gold-text mb-4">Sincronização Concluída!</h2>
             <p class="text-gray-300 text-sm leading-relaxed mb-8 px-4">
                 Identificamos os traços únicos e a frequência emocional de <span id="display-name" class="text-white font-bold"></span>. 
-                Nossa IA já está pronta para reconstruir esse reencontro que seu coração tanto espera.
+                <span class="block mt-2">O amor não conhece distâncias, apenas saudades que estão prestes a ser acalentadas.</span>
             </p>
             
             <div class="glass p-6 rounded-3xl text-left space-y-4 mb-8 mx-4">
                 <div class="flex gap-4">
                     <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Entrega em 5 minutos:</strong> Após o pagamento, nossa IA processa o vídeo e envia o link direto no seu <span class="text-green-400">WhatsApp</span>.</p>
+                    <p class="text-[11px] text-gray-400"><strong class="text-white">Entrega em 5 minutos:</strong> Este é o prazo de criação da nossa IA para garantir o realismo ultra-sensorial. O link chegará diretamente no seu <span class="text-green-400">WhatsApp</span>.</p>
                 </div>
                 <div class="flex gap-4">
                     <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Chamadas de Vídeo:</strong> Se você escolheu este plano, entraremos em contato via WhatsApp para agendar o melhor horário para você e sua família.</p>
+                    <p class="text-[11px] text-gray-400"><strong class="text-white">Chamadas de Vídeo:</strong> Entraremos em contato para combinar o melhor horário. Sinta-se à vontade para convidar familiares que também amavam e desejam essa última conversa.</p>
                 </div>
                 <div class="flex gap-4">
                     <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Acesso Vitalício:</strong> O vídeo é seu para sempre. Guarde, reveja e sinta a paz de ouvir quem você ama.</p>
+                    <p class="text-[11px] text-gray-400"><strong class="text-white">Sigilo e Respeito:</strong> Todo o processamento é protegido. Sua conexão com quem se foi é sagrada para nós.</p>
                 </div>
             </div>
 
             <button onclick="redirectToCheckout()" class="btn-cta w-full py-6 rounded-3xl text-xl font-black uppercase tracking-[3px] max-w-[90%] mx-auto block">
                 FINALIZAR REENCONTRO
             </button>
-            <p class="text-[9px] text-gray-600 mt-6 uppercase tracking-[3px]">A saudade está prestes a virar um abraço digital.</p>
+            <p class="text-[9px] text-gray-600 mt-6 uppercase tracking-[4px]">Tecnologia Certificada pela Criatório RN</p>
         </div>
     </div>
 
-    <header class="py-6 px-8 border-b border-white/5 text-center">
+    <header class="py-8 px-8 border-b border-white/5 flex justify-between items-center">
         <div class="text-xl font-black tracking-tighter italic">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
+        <div class="text-[10px] uppercase tracking-widest text-gray-500 font-bold flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Servidor Ativo
+        </div>
     </header>
 
-    <main class="max-w-3xl mx-auto py-12 px-6">
+    <main class="max-w-3xl mx-auto py-16 px-6">
+        
+        <div class="flex justify-between mb-12 text-[10px] uppercase tracking-[3px] text-gray-600 font-bold">
+            <span class="text-[#FF4A26]">01. Identificação</span>
+            <span>02. Processamento</span>
+            <span>03. Conclusão</span>
+        </div>
+
         <section class="animate__animated animate__fadeIn">
-            <h1 class="serif text-4xl md:text-5xl mb-4 italic text-center">Prepare o seu <span class="gold-text">Reencontro</span></h1>
-            
-            <form id="uploadForm" class="space-y-8 mt-10">
+            <h1 class="serif text-4xl md:text-6xl mb-4 italic leading-tight text-center">Prepare o seu <br><span class="gold-text italic text-5xl md:text-7xl">ponto de reencontro.</span></h1>
+            <p class="text-gray-400 mb-10 font-light text-center leading-relaxed">Nossa tecnologia irá mapear cada detalhe facial para reconstruir a alma de quem você ama. <span class="text-white">Siga os passos abaixo com carinho.</span></p>
+
+            <form id="uploadForm" class="space-y-10">
+                
                 <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">Quem vamos homenagear?</label>
-                    <input type="text" id="targetName" placeholder="Digite o nome aqui..." class="w-full p-5 rounded-2xl text-lg font-semibold" required>
+                    <label class="text-xs font-black uppercase tracking-widest text-white">Nome de quem iremos homenagear</label>
+                    <input type="text" id="targetName" placeholder="Como ele(a) se chamava?" class="w-full p-5 rounded-2xl text-lg font-semibold" required>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">1. Foto do Ente Querido</label>
-                    <div class="upload-card rounded-3xl p-10 text-center" onclick="document.getElementById('fileInput').click()">
+                    <label class="text-xs font-black uppercase tracking-widest text-white">1. Identidade Visual (Foto)</label>
+                    <div class="upload-card rounded-[2rem] p-12 text-center" onclick="document.getElementById('fileInput').click()">
                         <input type="file" id="fileInput" class="hidden" accept="image/*">
                         <div id="upload-content">
                             <div class="text-4xl mb-4">📸</div>
-                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique para escolher a foto</p>
+                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique para abrir a câmera ou galeria</p>
+                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Aceitamos fotos antigas ou de álbuns físicos</p>
                         </div>
                         <img id="preview" class="hidden mx-auto h-56 rounded-2xl object-cover border-2 border-white/10 shadow-2xl">
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">2. Áudio da Voz (Opcional)</label>
-                    <div class="upload-card rounded-3xl p-10 text-center border-[#FF4A26]/30" onclick="document.getElementById('audioInput').click()">
+                    <label class="text-xs font-black uppercase tracking-widest text-white">2. Identidade Vocal (Áudio)</label>
+                    <div class="upload-card rounded-[2rem] p-12 text-center border-[#FF4A26]/30" onclick="document.getElementById('audioInput').click()">
                         <input type="file" id="audioInput" class="hidden" accept="audio/*">
                         <div id="audio-upload-content">
                             <div class="text-4xl mb-4">🎵</div>
-                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique para enviar áudio</p>
+                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique aqui para enviar o áudio</p>
+                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Pode ser um áudio do WhatsApp ou gravação antiga</p>
                         </div>
-                        <div id="audio-preview" class="hidden text-green-500 font-bold text-sm">✓ ÁUDIO IDENTIFICADO</div>
+                        <div id="audio-preview" class="hidden text-green-500 font-bold text-sm animate-pulse">✓ FREQUÊNCIA VOCAL CAPTURADA</div>
                     </div>
                     
-                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
-                        <p class="text-xs text-white leading-relaxed font-medium">
+                    <div class="p-6 bg-white/5 rounded-2xl border border-[#D4AF37]/30">
+                        <p class="text-[13px] text-white leading-relaxed font-medium">
                             <span class="text-[#D4AF37] font-bold block mb-1">⚠️ NÃO POSSUI ÁUDIOS?</span>
-                            Nossa tecnologia <span class="text-[#FF4A26]">VocalSync</span> reconstruirá a voz através da estrutura óssea da foto. Se não enviar nada, usaremos este processo.
+                            Fique tranquilo(a). Nossa tecnologia <span class="text-[#FF4A26]">VocalSync</span> consegue estimar a frequência da voz através do DNA facial e mapeamento ósseo. Se você não enviar nada, usaremos este processo automaticamente.
                         </p>
                     </div>
                 </div>
 
                 <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">3. Uma lembrança ou mensagem</label>
-                    <textarea id="targetMessage" rows="3" placeholder="Escreva algo especial que ela diria..." class="w-full p-5 rounded-2xl text-lg font-medium"></textarea>
+                    <label class="text-xs font-black uppercase tracking-widest text-white">3. Contexto Emocional (Opcional)</label>
+                    <textarea id="targetMessage" rows="3" placeholder="Conte-nos uma breve lembrança ou algo que gostaria que fosse dito..." class="w-full p-5 rounded-2xl text-lg font-medium"></textarea>
+                    <p class="text-[10px] text-gray-600 italic uppercase tracking-tighter font-bold">* Nosso algoritmo usará isso para calibrar a entonação emocional.</p>
                 </div>
 
                 <div class="pt-6">
-                    <button type="button" onclick="startNeuralProcess()" class="btn-cta w-full py-7 rounded-3xl text-xl font-black uppercase tracking-[4px]">
-                        GERAR RECONSTRUÇÃO
+                    <button type="button" onclick="startNeuralProcess()" class="btn-cta w-full py-8 rounded-3xl text-xl font-black uppercase tracking-[4px]">
+                        INICIAR RECONSTRUÇÃO NEURAL
                     </button>
+                    <div class="mt-8 flex justify-center gap-8 grayscale opacity-30">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/safe-ok.png" class="h-6">
+                        <img src="https://img.icons8.com/ios-filled/50/ffffff/artificial-intelligence.png" class="h-6">
+                    </div>
                 </div>
             </form>
         </section>
+
+        <footer class="mt-24 text-center border-t border-white/5 pt-12 pb-12">
+            <p class="serif text-2xl italic text-gray-500 mb-4">"O amor não conhece distâncias, apenas saudades."</p>
+            <p class="text-[10px] text-gray-600 uppercase tracking-[4px]">Tecnologia Segura & Privada • Criatório RN</p>
+        </footer>
     </main>
 
     <script>
@@ -177,6 +180,9 @@
         const audioInput = document.getElementById('audioInput');
         const preview = document.getElementById('preview');
         const miniPreview = document.getElementById('mini-preview');
+        const uploadContent = document.getElementById('upload-content');
+        const audioContent = document.getElementById('audio-upload-content');
+        const audioPreview = document.getElementById('audio-preview');
 
         fileInput.onchange = evt => {
             const [file] = fileInput.files;
@@ -185,21 +191,21 @@
                 preview.src = url;
                 miniPreview.src = url;
                 preview.classList.remove('hidden');
-                document.getElementById('upload-content').classList.add('hidden');
+                uploadContent.classList.add('hidden');
             }
         }
 
         audioInput.onchange = evt => {
             if (audioInput.files[0]) {
-                document.getElementById('audio-upload-content').classList.add('hidden');
-                document.getElementById('audio-preview').classList.remove('hidden');
+                audioContent.classList.add('hidden');
+                audioPreview.classList.remove('hidden');
             }
         }
 
         function startNeuralProcess() {
             const name = document.getElementById('targetName').value;
             if(!name || !fileInput.files[0]) {
-                alert("Por favor, preencha o nome e a foto.");
+                alert("Por favor, preencha o nome e selecione uma foto.");
                 return;
             }
 
@@ -208,14 +214,16 @@
             const processingBox = document.getElementById('processing-box');
             const successCard = document.getElementById('success-card');
             const status = document.getElementById('loader-status');
+            const subtext = document.getElementById('loader-subtext');
             const bar = document.getElementById('bar-fill');
             
             overlay.style.display = 'flex';
             
             const steps = [
-                { p: 25, t: "Escaneando Face" },
-                { p: 60, t: "Sincronizando Voz" },
-                { p: 100, t: "Finalizado" }
+                { p: 15, t: "Mapeando Face", s: "Localizando 1.200 pontos de expressão..." },
+                { p: 40, t: "DNA Vocal", s: "Analisando frequência de " + name },
+                { p: 70, t: "Renderizando", s: "Clonando expressões neurais e olhar..." },
+                { p: 100, t: "Concluído", s: "Sincronização Finalizada!" }
             ];
 
             let currentStep = 0;
@@ -223,6 +231,7 @@
                 if(currentStep < steps.length) {
                     bar.style.width = steps[currentStep].p + "%";
                     status.innerText = steps[currentStep].t;
+                    subtext.innerText = steps[currentStep].s;
                     currentStep++;
                 } else {
                     clearInterval(interval);
@@ -237,13 +246,7 @@
         function redirectToCheckout() {
             window.location.href = "SEU_LINK_DE_PAGAMENTO_AQUI"; 
         }
-
-        function showToast(text) {
-            const toast = document.getElementById('toast');
-            toast.querySelector('p:last-child').innerText = text;
-            toast.classList.add('show-toast');
-            setTimeout(() => toast.classList.remove('show-toast'), 3000);
-        }
     </script>
+
 </body>
 </html>
