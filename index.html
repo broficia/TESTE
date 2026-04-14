@@ -3,250 +3,1734 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eternity IA | Resgate de Memória & Voz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Instrument+Serif:italic&display=swap" rel="stylesheet">
-    
+    <title>Grupo Ovos de Ouro - Ovos Galados de Raças Puras | Até 89% de Eclosão</title>
+    <meta name="description" content="Ovos galados férteis das melhores raças de galinhas do Brasil. Brahma, Índio Gigante, Ornamentais e mais. Até 89% de taxa de eclosão. Entrega rápida para todo o Brasil.">
+    <link rel="icon" href="images/a67de2994a.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #FF4A26; --bg: #030303; --gold: #D4AF37; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: white; overflow-x: hidden; }
-        .serif { font-family: 'Instrument Serif', serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .gold-text { background: linear-gradient(135deg, #D4AF37 0%, #F4E0A1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .btn-cta { background: linear-gradient(90deg, #FF4A26, #FF8A00); transition: 0.3s; box-shadow: 0 10px 30px rgba(255, 74, 38, 0.3); border: none; cursor: pointer; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Montserrat',sans-serif; background:#0a0a0a; color:#fff; overflow-x:hidden; }
         
-        input, textarea { 
-            background: rgba(255, 255, 255, 0.05) !important; 
-            border: 1px solid rgba(255, 255, 255, 0.1) !important; 
-            color: #ffffff !important;
+        /* ===== TOPBAR ===== */
+        .topbar {
+            background: linear-gradient(90deg, #b8860b, #daa520, #b8860b);
+            padding: 8px 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 1px;
+            overflow: hidden;
+        }
+        .topbar-inner {
+            display: flex;
+            animation: scrollTopbar 20s linear infinite;
+            white-space: nowrap;
+            width: max-content;
+        }
+        .topbar-inner span { margin: 0 30px; }
+        @keyframes scrollTopbar {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        .upload-card { border: 2px dashed rgba(255, 255, 255, 0.2); background: rgba(255,255,255,0.02); transition: 0.3s; cursor: pointer; }
-        .upload-card:hover { border-color: var(--primary); background: rgba(255, 74, 38, 0.08); }
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(218,165,32,0.3);
+        }
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-area img { height: 50px; }
+        .logo-area h1 { font-family:'Playfair Display',serif; font-size:20px; color:#daa520; }
+        .header-badge {
+            background: linear-gradient(135deg, #1a3a1a, #0d260d);
+            border: 1px solid #2d6b2d;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header-badge .pulse {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50% { opacity:0.5; transform:scale(1.3); }
+        }
+        .header-contact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #daa520;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-        #loader-overlay { 
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
-            z-index: 9999; display: none; align-items: center; justify-content: center; 
-            padding: 20px; backdrop-filter: blur(25px); 
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1000 50%, #0a0a0a 100%);
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .scanner-container {
-            position: relative; width: 220px; height: 220px;
-            border: 2px solid rgba(255, 74, 38, 0.4); border-radius: 24px; overflow: hidden;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(218,165,32,0.08) 0%, transparent 50%);
+            animation: heroGlow 8s ease-in-out infinite;
+        }
+        @keyframes heroGlow {
+            0%,100% { transform:scale(1); opacity:0.5; }
+            50% { transform:scale(1.1); opacity:1; }
+        }
+        .hero-content { position:relative; z-index:2; }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(218,165,32,0.15);
+            border: 1px solid rgba(218,165,32,0.4);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #daa520;
+            margin-bottom: 20px;
+        }
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 52px);
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+        .hero h2 .gold { color: #daa520; }
+        .hero p {
+            font-size: 16px;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat .number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #daa520;
+            display: block;
+        }
+        .hero-stat .label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .scanner-line { 
-            width: 100%; height: 4px; background: var(--primary); box-shadow: 0 0 25px var(--primary);
-            position: absolute; top: 0; animation: scan 2.5s ease-in-out infinite; z-index: 10;
+        /* ===== TRUST BADGES ===== */
+        .trust-bar {
+            background: linear-gradient(90deg, rgba(218,165,32,0.1), rgba(218,165,32,0.05));
+            border-top: 1px solid rgba(218,165,32,0.2);
+            border-bottom: 1px solid rgba(218,165,32,0.2);
+            padding: 20px 0;
         }
-        @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-        
-        .loading-bar-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.4s; }
-        #success-card { display: none; width: 100%; max-width: 500px; text-align: center; }
+        .trust-items {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ccc;
+        }
+        .trust-item .icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* ===== VSL SECTION ===== */
+        .vsl-section {
+            padding: 60px 0;
+            background: linear-gradient(180deg, #0a0a0a, #111);
+        }
+        .vsl-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .vsl-wrapper h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #daa520;
+        }
+        .vsl-wrapper p {
+            color: #888;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .vsl-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(218,165,32,0.4);
+            box-shadow: 0 0 60px rgba(218,165,32,0.15);
+            background: #000;
+            aspect-ratio: 16/9;
+        }
+        .vsl-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-title h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .section-title h3 .gold { color: #daa520; }
+        .section-title p { color: #888; font-size: 14px; }
+
+        /* ===== CATALOG ===== */
+        .catalog { padding: 60px 0; }
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: linear-gradient(145deg, #151515, #1a1a1a);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(218,165,32,0.4);
+            box-shadow: 0 20px 40px rgba(218,165,32,0.15);
+        }
+        .product-card .badge-top {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            z-index: 2;
+            text-transform: uppercase;
+        }
+        .product-card .img-wrap {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+        .product-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover .img-wrap img {
+            transform: scale(1.08);
+        }
+        .product-card .img-wrap .hatch-rate {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.85);
+            border: 1px solid #4ade80;
+            color: #4ade80;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .product-info {
+            padding: 16px;
+        }
+        .product-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .product-info .qty {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .price-old {
+            font-size: 13px;
+            color: #666;
+            text-decoration: line-through;
+        }
+        .price-new {
+            font-size: 22px;
+            font-weight: 900;
+            color: #daa520;
+        }
+        .price-new small { font-size: 13px; }
+        .btn-comprar {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            color: #000;
+        }
+        .btn-comprar:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(218,165,32,0.4);
+        }
+
+        /* ===== PRODUCT CARD - OUT OF STOCK ===== */
+        .product-card.esgotado .img-wrap::after {
+            content: 'ESGOTADO';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 900;
+            color: #ff4444;
+            letter-spacing: 3px;
+        }
+        .product-card.esgotado .btn-comprar {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            padding: 60px 0;
+            background: linear-gradient(180deg, #0d0d0d, #0a0a0a);
+        }
+        .testimonials-track {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 0 20px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .testimonials-track::-webkit-scrollbar { display:none; }
+        .testimonial-card {
+            min-width: 300px;
+            background: linear-gradient(145deg, #151515, #1c1c1c);
+            border: 1px solid rgba(218,165,32,0.15);
+            border-radius: 16px;
+            padding: 24px;
+            flex-shrink: 0;
+        }
+        .testimonial-card .stars { color: #daa520; font-size: 16px; margin-bottom: 12px; }
+        .testimonial-card .text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 16px; }
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .testimonial-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: #000;
+        }
+        .testimonial-card .author-info .name { font-size: 13px; font-weight: 700; }
+        .testimonial-card .author-info .loc { font-size: 11px; color: #888; }
+        .testimonial-card .purchased {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            font-size: 11px;
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        /* ===== FAQ ===== */
+        .faq { padding: 60px 0; }
+        .faq-item {
+            background: #151515;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .faq-q {
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .faq-q:hover { background: rgba(218,165,32,0.05); }
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-a {
+            max-height: 200px;
+            padding: 0 20px 18px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #050505;
+            border-top: 1px solid rgba(218,165,32,0.2);
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        .footer-logo { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:15px; }
+        .footer-logo img { height:40px; }
+        .footer-logo span { font-family:'Playfair Display',serif; font-size:18px; color:#daa520; }
+        .footer p { color:#666; font-size:12px; margin-bottom:8px; }
+
+        /* ===== NOTIFICATION POPUP ===== */
+        .notification-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(145deg, #1a1a1a, #222);
+            border: 1px solid rgba(218,165,32,0.3);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            max-width: 340px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            transform: translateX(-120%);
+            transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55);
+        }
+        .notification-popup.show { transform: translateX(0); }
+        .notification-popup .notif-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .notification-popup .notif-text { font-size: 12px; color: #ccc; line-height: 1.4; }
+        .notification-popup .notif-text strong { color: #fff; }
+        .notification-popup .notif-time { font-size: 10px; color: #666; margin-top: 3px; display:block; }
+
+        /* ===== CTA FINAL ===== */
+        .cta-final {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(180deg, #0a0a0a, #1a1000, #0a0a0a);
+            position: relative;
+        }
+        .cta-final h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        .cta-final h3 .gold { color:#daa520; }
+        .cta-final p { color:#aaa; max-width:500px; margin:0 auto 25px; font-size:14px; }
+        .cta-final .btn-cta {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            color: #000;
+            font-weight: 800;
+            font-size: 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            animation: ctaPulse 2s infinite;
+        }
+        @keyframes ctaPulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(218,165,32,0.5); }
+            50% { box-shadow: 0 0 0 15px rgba(218,165,32,0); }
+        }
+
+        /* ===== GUARANTEE SECTION ===== */
+        .guarantee {
+            padding: 50px 0;
+            background: #0d0d0d;
+        }
+        .guarantee-box {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(145deg, #151515, #1a1a1a);
+            border: 1px solid rgba(218,165,32,0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+        }
+        .guarantee-box .shield { font-size: 50px; margin-bottom: 15px; }
+        .guarantee-box h3 { font-size: 22px; margin-bottom: 10px; color: #daa520; font-weight: 800; }
+        .guarantee-box p { font-size: 14px; color: #aaa; line-height: 1.7; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width:768px) {
+            .header .container { flex-direction:column; gap:10px; }
+            .header-badge, .header-contact { display:none; }
+            .hero-stats { gap:20px; }
+            .hero-stat .number { font-size:28px; }
+            .trust-items { gap:20px; }
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap:12px; }
+            .product-card .img-wrap { height:160px; }
+            .product-info h4 { font-size:13px; }
+            .price-new { font-size:18px; }
+            .btn-comprar { font-size:12px; padding:10px; }
+            .notification-popup { bottom:10px; left:10px; right:10px; max-width:none; }
+        }
+        @media (max-width:480px) {
+            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap:10px; }
+            .product-info { padding:10px; }
+        }
+
+        /* ===== CATEGORY FILTER ===== */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(218,165,32,0.3);
+            background: transparent;
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: linear-gradient(135deg, #daa520, #b8860b);
+            color: #000;
+            border-color: #daa520;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader-overlay">
-        <div id="processing-box" class="flex flex-col items-center w-full max-w-sm">
-            <div class="scanner-container mb-8">
-                <div class="scanner-line"></div>
-                <img id="mini-preview" class="w-full h-full object-cover opacity-50 grayscale">
-                <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-            </div>
-            <h2 id="loader-status" class="text-xl font-bold uppercase tracking-[4px]">Sincronizando</h2>
-            <p id="loader-subtext" class="text-[11px] text-gray-500 uppercase tracking-[2px] mt-2">Acessando memórias neurais...</p>
-            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-6">
-                <div id="bar-fill" class="loading-bar-fill"></div>
-            </div>
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
+    <div class="topbar-inner">
+        <span>🥚 OVOS GALADOS DE RAÇAS PURAS</span>
+        <span>🐔 ATÉ 89% DE TAXA DE ECLOSÃO</span>
+        <span>🚚 ENVIO PARA TODO O BRASIL</span>
+        <span>✅ GENÉTICA PREMIUM GARANTIDA</span>
+        <span>⭐ +5.000 CLIENTES SATISFEITOS</span>
+        <span>🔒 COMPRA 100% SEGURA</span>
+        <span>🥚 OVOS GALADOS DE RAÇAS PURAS</span>
+        <span>🐔 ATÉ 89% DE TAXA DE ECLOSÃO</span>
+        <span>🚚 ENVIO PARA TODO O BRASIL</span>
+        <span>✅ GENÉTICA PREMIUM GARANTIDA</span>
+        <span>⭐ +5.000 CLIENTES SATISFEITOS</span>
+        <span>🔒 COMPRA 100% SEGURA</span>
+    </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="container">
+        <div class="logo-area">
+            <img src="images/a712dec5d0.png" alt="Grupo Ovos de Ouro">
+            <h1>GRUPO OVOS DE OURO</h1>
         </div>
+        <div class="header-badge">
+            <div class="pulse"></div>
+            <span id="onlineCount">347</span> pessoas comprando agora
+        </div>
+        <a href="https://wa.me/5542988177732" target="_blank" class="header-contact">
+            📱 (42) 98817-7732
+        </a>
+    </div>
+</div>
 
-        <div id="success-card" class="animate__animated animate__zoomIn">
-            <div class="text-5xl mb-6">✨</div>
-            <h2 class="serif text-4xl italic gold-text mb-4">Sincronização Concluída!</h2>
-            <p class="text-gray-300 text-sm leading-relaxed mb-8 px-4">
-                Identificamos os traços únicos e a frequência emocional de <span id="display-name" class="text-white font-bold"></span>. 
-                <span class="block mt-2">O amor não conhece distâncias, apenas saudades que estão prestes a ser acalentadas.</span>
-            </p>
-            
-            <div class="glass p-6 rounded-3xl text-left space-y-4 mb-8 mx-4">
-                <div class="flex gap-4">
-                    <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Entrega em 5 minutos:</strong> Este é o prazo de criação da nossa IA para garantir o realismo ultra-sensorial. O link chegará diretamente no seu <span class="text-green-400">WhatsApp</span>.</p>
-                </div>
-                <div class="flex gap-4">
-                    <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Chamadas de Vídeo:</strong> Entraremos em contato para combinar o melhor horário. Sinta-se à vontade para convidar familiares que também amavam e desejam essa última conversa.</p>
-                </div>
-                <div class="flex gap-4">
-                    <span class="text-[#FF4A26] font-bold">●</span>
-                    <p class="text-[11px] text-gray-400"><strong class="text-white">Sigilo e Respeito:</strong> Todo o processamento é protegido. Sua conexão com quem se foi é sagrada para nós.</p>
-                </div>
-            </div>
-
-            <button onclick="redirectToCheckout()" class="btn-cta w-full py-6 rounded-3xl text-xl font-black uppercase tracking-[3px] max-w-[90%] mx-auto block">
-                FINALIZAR REENCONTRO
-            </button>
-            <p class="text-[9px] text-gray-600 mt-6 uppercase tracking-[4px]">Tecnologia Certificada pela Criatório RN</p>
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="container hero-content">
+        <div class="hero-badge">🏆 Criatório Nº1 do Brasil em Ovos Galados</div>
+        <h2>Ovos Galados <span class="gold">Férteis</span> das<br>Melhores Raças do Brasil</h2>
+        <p>Genética premium selecionada dos maiores criatórios do país. Nossos ovos têm <strong style="color:#4ade80;">até 89% de taxa de eclosão</strong> comprovada por milhares de clientes.</p>
+        <div class="hero-stats">
+            <div class="hero-stat"><span class="number">89%</span><span class="label">Taxa de Eclosão</span></div>
+            <div class="hero-stat"><span class="number">40+</span><span class="label">Raças Disponíveis</span></div>
+            <div class="hero-stat"><span class="number">5K+</span><span class="label">Clientes Felizes</span></div>
+            <div class="hero-stat"><span class="number">24h</span><span class="label">Envio Rápido</span></div>
         </div>
     </div>
+</section>
 
-    <header class="py-8 px-8 border-b border-white/5 flex justify-between items-center">
-        <div class="text-xl font-black tracking-tighter italic">ETERNITY<span class="text-[#FF4A26]">.AI</span></div>
-        <div class="text-[10px] uppercase tracking-widest text-gray-500 font-bold flex items-center gap-2">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Servidor Ativo
+<!-- ===== TRUST BAR ===== -->
+<div class="trust-bar">
+    <div class="container">
+        <div class="trust-items">
+            <div class="trust-item"><div class="icon">🥚</div><span>Ovos 100% Férteis</span></div>
+            <div class="trust-item"><div class="icon">🧬</div><span>Genética Pura</span></div>
+            <div class="trust-item"><div class="icon">📦</div><span>Embalagem Especial</span></div>
+            <div class="trust-item"><div class="icon">🚀</div><span>Envio em 24h</span></div>
+            <div class="trust-item"><div class="icon">🔒</div><span>Compra Segura</span></div>
         </div>
-    </header>
+    </div>
+</div>
 
-    <main class="max-w-3xl mx-auto py-16 px-6">
-        
-        <div class="flex justify-between mb-12 text-[10px] uppercase tracking-[3px] text-gray-600 font-bold">
-            <span class="text-[#FF4A26]">01. Identificação</span>
-            <span>02. Processamento</span>
-            <span>03. Conclusão</span>
+<!-- ===== VSL VIDEO ===== -->
+<section class="vsl-section">
+    <div class="container">
+        <div class="vsl-wrapper">
+            <h3>Veja Como Funciona</h3>
+            <p>Assista e entenda por que somos referência em ovos galados no Brasil</p>
+            <div class="vsl-container">
+                <!-- COLOQUE SEU VÍDEO MP4 AQUI -->
+                <video controls poster="images/ovos-galados-fe-rteis---grupo-ovos-de-ouro--1--xz3skdcynv.jpg">
+                    <source src="SEU-VIDEO-AQUI.mp4" type="video/mp4">
+                    Seu navegador não suporta vídeo.
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CATÁLOGO ===== -->
+<section class="catalog" id="catalogo">
+    <div class="container">
+        <div class="section-title">
+            <h3>Escolha Sua <span class="gold">Raça</span> e Garanta Seus Ovos</h3>
+            <p>Selecione a raça desejada e compre direto. Cada dúzia é cuidadosamente embalada para máxima fertilidade.</p>
         </div>
 
-        <section class="animate__animated animate__fadeIn">
-            <h1 class="serif text-4xl md:text-6xl mb-4 italic leading-tight text-center">Prepare o seu <br><span class="gold-text italic text-5xl md:text-7xl">ponto de reencontro.</span></h1>
-            <p class="text-gray-400 mb-10 font-light text-center leading-relaxed">Nossa tecnologia irá mapear cada detalhe facial para reconstruir a alma de quem você ama. <span class="text-white">Siga os passos abaixo com carinho.</span></p>
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterProducts('all')">Todas</button>
+            <button class="filter-btn" onclick="filterProducts('brahma')">Brahmas</button>
+            <button class="filter-btn" onclick="filterProducts('ornamental')">Ornamentais</button>
+            <button class="filter-btn" onclick="filterProducts('caipira')">Caipiras</button>
+            <button class="filter-btn" onclick="filterProducts('marreco')">Marrecos/Patos</button>
+        </div>
 
-            <form id="uploadForm" class="space-y-10">
-                
-                <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">Nome de quem iremos homenagear</label>
-                    <input type="text" id="targetName" placeholder="Como ele(a) se chamava?" class="w-full p-5 rounded-2xl text-lg font-semibold" required>
+        <div class="catalog-grid" id="catalogGrid">
+
+            <!-- PRODUTO 1 -->
+            <div class="product-card" data-cat="brahma">
+                <span class="badge-top">⭐ Popular</span>
+                <div class="img-wrap">
+                    <img src="images/354fe028bf.jpg" alt="Brahma Light - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
                 </div>
+                <div class="product-info">
+                    <h4>Brahma Light - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_LIGHT" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
 
-                <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">1. Identidade Visual (Foto)</label>
-                    <div class="upload-card rounded-[2rem] p-12 text-center" onclick="document.getElementById('fileInput').click()">
-                        <input type="file" id="fileInput" class="hidden" accept="image/*">
-                        <div id="upload-content">
-                            <div class="text-4xl mb-4">📸</div>
-                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique para abrir a câmera ou galeria</p>
-                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Aceitamos fotos antigas ou de álbuns físicos</p>
-                        </div>
-                        <img id="preview" class="hidden mx-auto h-56 rounded-2xl object-cover border-2 border-white/10 shadow-2xl">
+            <!-- PRODUTO 2 -->
+            <div class="product-card" data-cat="ornamental">
+                <span class="badge-top">🔥 Mais Vendido</span>
+                <div class="img-wrap">
+                    <img src="images/pixelcut-export-lahpc0n86f.png" alt="Índio Gigante - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Índio Gigante - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 59,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_INDIO_GIGANTE" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 3 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/8f9ce75b9d.jpg" alt="Brahma Negra - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Negra - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_NEGRA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 4 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/4726a629a6.jpg" alt="Brahma Dark - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Dark - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_DARK" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 5 -->
+            <div class="product-card" data-cat="marreco">
+                <div class="img-wrap">
+                    <img src="images/5d1787ee90.jpg" alt="Marreco Pom Pom - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Marreco Pom Pom - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,00</span>
+                        <span class="price-new"><small>R$</small> 29,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_MARRECO_POMPOM" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 6 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/20fd538000.jpg" alt="Brahma Marmorizado - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Marmorizado - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_MARMORIZADO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 7 -->
+            <div class="product-card" data-cat="marreco">
+                <div class="img-wrap">
+                    <img src="images/9324679f55.jpg" alt="Marrecos Rouen Gigante - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Marrecos Rouen Gigante - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,00</span>
+                        <span class="price-new"><small>R$</small> 34,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_MARRECO_ROUEN" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 8 -->
+            <div class="product-card" data-cat="marreco">
+                <div class="img-wrap">
+                    <img src="images/snapinsta-app_398215516_18310313101115716_2897643607604122938_n_1080-hx1psy5nsr.jpg" alt="Pato Gigante Alemão" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Pato Gigante Alemão - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 59,99</span>
+                        <span class="price-new"><small>R$</small> 39,99</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_PATO_GIGANTE_ALEMAO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 9 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/6903fd9d5d.jpg" alt="Belgian Mottled Amarelo - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Belgian Mottled Amarelo - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,77</span>
+                        <span class="price-new"><small>R$</small> 29,77</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BELGIAN_AMARELO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 10 -->
+            <div class="product-card" data-cat="ornamental">
+                <span class="badge-top">💎 Premium</span>
+                <div class="img-wrap">
+                    <img src="images/pixelcut-export--1--wu0961bj74.png" alt="Indio Gigante - 12 Ovos Galados" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Índio Gigante - Combo 12 Ovos</h4>
+                    <p class="qty">🥚 12 Ovos Galados Selecionados</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 499,00</span>
+                        <span class="price-new"><small>R$</small> 399,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_INDIO_GIGANTE_12" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 11 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/1-3ekzuc9x3y.jpg" alt="Sebright Camurça - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Sebright Camurça - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_SEBRIGHT_CAMURCA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 12 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/5dce17ea95.jpg" alt="Brahma Buff Azul - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Buff Azul - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_BUFF_AZUL" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 13 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/pixelcut-export-6r68b8xpkt.png" alt="Galinha Frisada - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Galinha Frisada - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 39,70</span>
+                        <span class="price-new"><small>R$</small> 24,70</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_GALINHA_FRISADA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 14 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/b9fcfeb97d.jpg" alt="Cara De Palhaço Preto - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Cara De Palhaço Preto - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_CARA_PALHACO_PRETO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 15 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/4e60e31f27.jpg" alt="Brahma Prata - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Prata - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,80</span>
+                        <span class="price-new"><small>R$</small> 34,80</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_PRATA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 16 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/8e1f4d015a.jpg" alt="Siamesa - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Siamesa (Dócil) - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 34,79</span>
+                        <span class="price-new"><small>R$</small> 19,79</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_SIAMESA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 17 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/95acffedc0.jpg" alt="Gigante Alemão - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Gigante Alemão - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 57,90</span>
+                        <span class="price-new"><small>R$</small> 37,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_GIGANTE_ALEMAO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 18 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/93b0c98b48.jpg" alt="Cochinchina Barrada - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Cochinchina Barrada - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 39,70</span>
+                        <span class="price-new"><small>R$</small> 24,70</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_COCHINCHINA_BARRADA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 19 -->
+            <div class="product-card" data-cat="caipira">
+                <span class="badge-top">💰 Econômico</span>
+                <div class="img-wrap">
+                    <img src="images/fd4e5450a5.jpg" alt="Caipira Melhorado - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Caipira Melhorado - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 34,00</span>
+                        <span class="price-new"><small>R$</small> 19,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_CAIPIRA_MELHORADO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 20 -->
+            <div class="product-card" data-cat="caipira">
+                <div class="img-wrap">
+                    <img src="images/c09d96bb33.jpg" alt="Anma Super Caipira - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Anma (Super Caipira) - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 34,70</span>
+                        <span class="price-new"><small>R$</small> 19,70</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_ANMA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 21 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/4-gyi0zbg235.png" alt="Gigante Azul de Fênix Dourado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Gigante Azul Fênix Dourado - Ovo</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_FENIX_DOURADO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 22 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/16-sbyp751swf.png" alt="Sebright Prata - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Sebright Prata - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_SEBRIGHT_PRATA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 23 -->
+            <div class="product-card" data-cat="marreco">
+                <div class="img-wrap">
+                    <img src="images/ovos-galados-fe-rteis---grupo-ovos-de-ouro--1--xz3skdcynv.jpg" alt="Marreco Pompom 12 ovos" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Marreco Pompom - Combo 12 Ovos</h4>
+                    <p class="qty">🥚 12 Ovos Galados para Chocar</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 297,00</span>
+                        <span class="price-new"><small>R$</small> 197,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_MARRECO_POMPOM_12" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 24 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/f371147ca0.jpg" alt="Cara De Palhaço Azul - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Cara De Palhaço Azul - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_CARA_PALHACO_AZUL" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 25 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/f41d9fbb63.jpg" alt="Belgian Mottled - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Belgian Mottled - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,77</span>
+                        <span class="price-new"><small>R$</small> 29,77</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BELGIAN_MOTTLED" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 26 -->
+            <div class="product-card" data-cat="marreco">
+                <div class="img-wrap">
+                    <img src="images/9afb994a16.jpg" alt="Marrecos Saxony - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Marrecos Saxony - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 48,00</span>
+                        <span class="price-new"><small>R$</small> 28,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_MARRECO_SAXONY" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 27 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/8f580c8bfa.jpg" alt="Ameraucana Ovos Azuis" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Ameraucana (Ovos Azuis) - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 57,90</span>
+                        <span class="price-new"><small>R$</small> 37,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_AMERAUCANA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 28 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/b47e595b7d.jpg" alt="Brahma Barrada - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Barrada - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_BARRADA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 29 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/dc4970f121.jpg" alt="Brahma Perdiz Azul - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Perdiz Azul - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_PERDIZ_AZUL" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 30 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/f255716685.jpg" alt="Brahma Light Azul - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Light Azul - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 49,90</span>
+                        <span class="price-new"><small>R$</small> 29,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_LIGHT_AZUL" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 31 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/3de0f9b62b.jpg" alt="Brahma Perdiz - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Perdiz - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_PERDIZ" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 32 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/bb3b09165b.jpg" alt="Brahma Prata e Laceada - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Prata e Laceada - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_PRATA_LACEADA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 33 -->
+            <div class="product-card" data-cat="brahma">
+                <div class="img-wrap">
+                    <img src="images/1e4c026140.jpg" alt="Brahma Silver - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Brahma Silver - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 54,90</span>
+                        <span class="price-new"><small>R$</small> 34,90</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAHMA_SILVER" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 34 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/13-dppd3yo5ve.png" alt="Sebright Dourado - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Sebright Dourado - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_SEBRIGHT_DOURADO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 35 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/11-ei4a1mh8tn.jpg" alt="Polonesa Barrada Carijó - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Polonesa Barrada Carijó - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_POLONESA_BARRADA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 36 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/design-sem-nome-3ge1ffiux6.png" alt="Nagasaki Galizé Birchen" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Nagasaki Galizé Birchen - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_NAGASAKI" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 37 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/snapedit_1723558733654-n7wiqw971w.png" alt="Galinha Sutan - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Galinha Sutan - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-new"><small>R$</small> Consultar</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_GALINHA_SUTAN" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 38 -->
+            <div class="product-card" data-cat="ornamental">
+                <span class="badge-top">🦚 Raro</span>
+                <div class="img-wrap">
+                    <img src="images/9-587t328vxg.jpg" alt="Pavão Branco - 6 Ovos Galados" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Pavão Branco - 6 Ovos Galados</h4>
+                    <p class="qty">🥚 6 Ovos Galados Premium</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 1.296,00</span>
+                        <span class="price-new"><small>R$</small> 996,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_PAVAO_BRANCO" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 39 -->
+            <div class="product-card" data-cat="ornamental">
+                <span class="badge-top">🦚 Raro</span>
+                <div class="img-wrap">
+                    <img src="images/6-am3d8zs151.jpg" alt="Pavão Azul - 6 Ovos Galados" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Pavão Azul - 6 Ovos Galados</h4>
+                    <p class="qty">🥚 6 Ovos Galados Premium</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 1.297,00</span>
+                        <span class="price-new"><small>R$</small> 997,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_PAVAO_AZUL" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+            <!-- PRODUTO 40 -->
+            <div class="product-card" data-cat="ornamental">
+                <div class="img-wrap">
+                    <img src="images/937e0879b9.jpg" alt="Braeckel Camurça - Ovo Galado" loading="lazy">
+                    <span class="hatch-rate">✅ 89% eclosão</span>
+                </div>
+                <div class="product-info">
+                    <h4>Braeckel Camurça - Ovo Galado</h4>
+                    <p class="qty">🥚 1 Dúzia (12 ovos férteis)</p>
+                    <div class="price-row">
+                        <span class="price-old">R$ 53,00</span>
+                        <span class="price-new"><small>R$</small> 33,00</span>
+                    </div>
+                    <a href="LINK_CHECKOUT_BRAECKEL_CAMURCA" class="btn-comprar">🛒 Comprar Agora</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== GUARANTEE ===== -->
+<section class="guarantee">
+    <div class="container">
+        <div class="guarantee-box">
+            <div class="shield">🛡️</div>
+            <h3>Garantia de Fertilidade Comprovada</h3>
+            <p>Nossos ovos galados passam por rigoroso controle de qualidade genética. São selecionados de matrizes premium dos maiores criatórios do Brasil, garantindo <strong style="color:#4ade80;">até 89% de taxa de eclosão</strong>. Cada ovo é embalado individualmente com proteção térmica especial para chegar vivo e fértil na sua casa. Se houver qualquer problema na entrega, repomos sem custo adicional.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== DEPOIMENTOS ===== -->
+<section class="testimonials" id="depoimentos">
+    <div class="container">
+        <div class="section-title">
+            <h3>O Que Nossos <span class="gold">Clientes</span> Dizem</h3>
+            <p>Mais de 5.000 criadores satisfeitos em todo o Brasil</p>
+        </div>
+        <div class="testimonials-track" id="testimonialsTrack">
+
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Comprei 1 dúzia de Brahma Light e chegou em apenas 3 dias! Embalagem impecável, todos os ovos inteiros. Coloquei na chocadeira e dos 12 ovos, 11 eclodiram! Genética absurda, pintinhos lindos e saudáveis. Já fiz meu segundo pedido! 🔥</div>
+                <div class="author">
+                    <div class="avatar">RM</div>
+                    <div class="author-info">
+                        <div class="name">Roberto Menezes</div>
+                        <div class="loc">📍 Curitiba - PR</div>
                     </div>
                 </div>
+                <div class="purchased">✅ Comprou: Brahma Light - 1 Dúzia</div>
+            </div>
 
-                <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">2. Identidade Vocal (Áudio)</label>
-                    <div class="upload-card rounded-[2rem] p-12 text-center border-[#FF4A26]/30" onclick="document.getElementById('audioInput').click()">
-                        <input type="file" id="audioInput" class="hidden" accept="audio/*">
-                        <div id="audio-upload-content">
-                            <div class="text-4xl mb-4">🎵</div>
-                            <p class="text-sm font-bold uppercase text-[#FF4A26]">Clique aqui para enviar o áudio</p>
-                            <p class="text-[11px] text-gray-500 mt-2 uppercase tracking-tighter">Pode ser um áudio do WhatsApp ou gravação antiga</p>
-                        </div>
-                        <div id="audio-preview" class="hidden text-green-500 font-bold text-sm animate-pulse">✓ FREQUÊNCIA VOCAL CAPTURADA</div>
-                    </div>
-                    
-                    <div class="p-6 bg-white/5 rounded-2xl border border-[#D4AF37]/30">
-                        <p class="text-[13px] text-white leading-relaxed font-medium">
-                            <span class="text-[#D4AF37] font-bold block mb-1">⚠️ NÃO POSSUI ÁUDIOS?</span>
-                            Fique tranquilo(a). Nossa tecnologia <span class="text-[#FF4A26]">VocalSync</span> consegue estimar a frequência da voz através do DNA facial e mapeamento ósseo. Se você não enviar nada, usaremos este processo automaticamente.
-                        </p>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Eu estava desconfiado no início, mas resolvi arriscar. Pedi Índio Gigante e cara... que resultado ABSURDO! 10 de 12 nasceram perfeitos. A raça veio pura mesmo, os pintinhos já nasceram grandes. Recomendo demais esse criatório!</div>
+                <div class="author">
+                    <div class="avatar">JP</div>
+                    <div class="author-info">
+                        <div class="name">João Pedro Almeida</div>
+                        <div class="loc">📍 Goiânia - GO</div>
                     </div>
                 </div>
+                <div class="purchased">✅ Comprou: Índio Gigante - 1 Dúzia</div>
+            </div>
 
-                <div class="space-y-3">
-                    <label class="text-xs font-black uppercase tracking-widest text-white">3. Contexto Emocional (Opcional)</label>
-                    <textarea id="targetMessage" rows="3" placeholder="Conte-nos uma breve lembrança ou algo que gostaria que fosse dito..." class="w-full p-5 rounded-2xl text-lg font-medium"></textarea>
-                    <p class="text-[10px] text-gray-600 italic uppercase tracking-tighter font-bold">* Nosso algoritmo usará isso para calibrar a entonação emocional.</p>
-                </div>
-
-                <div class="pt-6">
-                    <button type="button" onclick="startNeuralProcess()" class="btn-cta w-full py-8 rounded-3xl text-xl font-black uppercase tracking-[4px]">
-                        INICIAR RECONSTRUÇÃO NEURAL
-                    </button>
-                    <div class="mt-8 flex justify-center gap-8 grayscale opacity-30">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/safe-ok.png" class="h-6">
-                        <img src="https://img.icons8.com/ios-filled/50/ffffff/artificial-intelligence.png" class="h-6">
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Sou criador há 15 anos e nunca vi ovos galados chegarem tão bem embalados. Pedi Brahma Prata e Brahma Silver. A taxa de eclosão foi de 89% certinho! Os pintinhos vieram com genética top. Virei cliente fiel! 💪</div>
+                <div class="author">
+                    <div class="avatar">AS</div>
+                    <div class="author-info">
+                        <div class="name">Antônio Silva</div>
+                        <div class="loc">📍 Belo Horizonte - MG</div>
                     </div>
                 </div>
-            </form>
-        </section>
+                <div class="purchased">✅ Comprou: Brahma Prata + Brahma Silver</div>
+            </div>
 
-        <footer class="mt-24 text-center border-t border-white/5 pt-12 pb-12">
-            <p class="serif text-2xl italic text-gray-500 mb-4">"O amor não conhece distâncias, apenas saudades."</p>
-            <p class="text-[10px] text-gray-600 uppercase tracking-[4px]">Tecnologia Segura & Privada • Criatório RN</p>
-        </footer>
-    </main>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Minha esposa pediu Marreco Pom Pom e Cara de Palhaço Azul. Chegou tudo perfeito em casa! Os marrecos são LINDOS, já estão crescendo rápido. A qualidade dos ovos é diferenciada. Obrigado equipe Ovos de Ouro! 🥚✨</div>
+                <div class="author">
+                    <div class="avatar">CF</div>
+                    <div class="author-info">
+                        <div class="name">Carlos Ferreira</div>
+                        <div class="loc">📍 Ribeirão Preto - SP</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Marreco Pom Pom + Cara de Palhaço Azul</div>
+            </div>
 
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const audioInput = document.getElementById('audioInput');
-        const preview = document.getElementById('preview');
-        const miniPreview = document.getElementById('mini-preview');
-        const uploadContent = document.getElementById('upload-content');
-        const audioContent = document.getElementById('audio-upload-content');
-        const audioPreview = document.getElementById('audio-preview');
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Pedi a Cochinchina Barrada e o Gigante Alemão. Os ovos chegaram super rápido, bem embalados com proteção de espuma. Botei na chocadeira e tive 88% de eclosão! Melhor investimento que fiz pro meu sítio. 🐔</div>
+                <div class="author">
+                    <div class="avatar">ML</div>
+                    <div class="author-info">
+                        <div class="name">Maria Lúcia Santos</div>
+                        <div class="loc">📍 Campinas - SP</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Cochinchina Barrada + Gigante Alemão</div>
+            </div>
 
-        fileInput.onchange = evt => {
-            const [file] = fileInput.files;
-            if (file) {
-                const url = URL.createObjectURL(file);
-                preview.src = url;
-                miniPreview.src = url;
-                preview.classList.remove('hidden');
-                uploadContent.classList.add('hidden');
-            }
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Fiz uma encomenda grande: 1 dúzia de Belgian Mottled Amarelo, Brahma Dark e Brahma Negra. TODOS os ovos chegaram inteiros e a taxa de eclosão ficou acima de 85% em todas as raças. Qualidade premium de verdade! 🏆</div>
+                <div class="author">
+                    <div class="avatar">RO</div>
+                    <div class="author-info">
+                        <div class="name">Rafael Oliveira</div>
+                        <div class="loc">📍 Salvador - BA</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Belgian + Brahma Dark + Brahma Negra</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Comprei a Galinha Frisada e a Siamesa. A Frisada é simplesmente MARAVILHOSA, os pintinhos já nasceram com as penas onduladas. E a Siamesa é super dócil, minhas crianças adoraram. Nota 10 pra vocês! 👏</div>
+                <div class="author">
+                    <div class="avatar">FS</div>
+                    <div class="author-info">
+                        <div class="name">Fernanda Souza</div>
+                        <div class="loc">📍 Florianópolis - SC</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Galinha Frisada + Siamesa</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Terceira vez que compro e sempre impecável! Dessa vez pedi Ameraucana pra ter ovos azuis em casa. Dos 12, 10 eclodiram e os pintinhos estão perfeitos. As galinhas já começaram a botar e os ovos são azuis de verdade! 💙🥚</div>
+                <div class="author">
+                    <div class="avatar">LB</div>
+                    <div class="author-info">
+                        <div class="name">Lucas Barbosa</div>
+                        <div class="loc">📍 Porto Alegre - RS</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Ameraucana (3ª compra)</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Sou do interior do Ceará e achei que a entrega ia demorar. Recebi em 4 dias! Pedi Caipira Melhorado e Anma. Preço justo e qualidade absurda. Os pintinhos nasceram fortes e saudáveis. Super recomendo! 🚀</div>
+                <div class="author">
+                    <div class="avatar">DN</div>
+                    <div class="author-info">
+                        <div class="name">Diego Nascimento</div>
+                        <div class="loc">📍 Juazeiro do Norte - CE</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Caipira Melhorado + Anma</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div class="text">Investi nos ovos de Pavão Azul e valeu MUITO a pena! A embalagem era ultra reforçada, os ovos vieram perfeitos. Coloquei na chocadeira e 5 dos 6 eclodiram. Pavões lindos, saudáveis e com genética impecável! 🦚</div>
+                <div class="author">
+                    <div class="avatar">PM</div>
+                    <div class="author-info">
+                        <div class="name">Paulo Martins</div>
+                        <div class="loc">📍 Brasília - DF</div>
+                    </div>
+                </div>
+                <div class="purchased">✅ Comprou: Pavão Azul - 6 Ovos</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq">
+    <div class="container">
+        <div class="section-title">
+            <h3>Perguntas <span class="gold">Frequentes</span></h3>
+        </div>
+        <div style="max-width:700px;margin:0 auto;">
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Como é feito o envio dos ovos?</span><span>+</span>
+                </div>
+                <div class="faq-a">Os ovos são embalados individualmente com espuma proteção térmica e caixa reforçada. Enviamos via Sedex com rastreamento para todo o Brasil em até 24h após a confirmação do pagamento.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Qual a taxa de eclosão dos ovos?</span><span>+</span>
+                </div>
+                <div class="faq-a">Nossos ovos galados possuem taxa de eclosão comprovada de até 89%. Trabalhamos apenas com matrizes premium de genética pura, garantindo alta fertilidade em cada ovo.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Os ovos podem quebrar no transporte?</span><span>+</span>
+                </div>
+                <div class="faq-a">Extremamente raro! Usamos embalagem com espuma de alta densidade, proteção individual para cada ovo e caixa térmica reforçada. Em caso de quebra no transporte, fazemos reposição imediata sem custo.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>A raça vem pura mesmo?</span><span>+</span>
+                </div>
+                <div class="faq-a">100% garantido! Trabalhamos com os maiores criatórios do Brasil que mantêm plantéis puros e separados por raça. Cada lote é identificado e rastreado para garantir a pureza genética.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Vocês enviam para qualquer estado?</span><span>+</span>
+                </div>
+                <div class="faq-a">Sim! Enviamos para todos os estados do Brasil via Sedex. A entrega geralmente leva de 2 a 5 dias úteis dependendo da região.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+                    <span>Posso chocar em chocadeira ou galinha?</span><span>+</span>
+                </div>
+                <div class="faq-a">Sim! Nossos ovos podem ser chocados tanto em chocadeira automática quanto sob galinha choca. Ambos os métodos funcionam perfeitamente com nossos ovos férteis.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA FINAL ===== -->
+<section class="cta-final">
+    <div class="container">
+        <h3>Não Perca Tempo — <span class="gold">Garanta Seus Ovos</span> Agora!</h3>
+        <p>Estoque limitado. Nossos ovos são coletados frescos e enviados diariamente. Quanto antes comprar, mais férteis chegarão na sua casa.</p>
+        <a href="#catalogo" class="btn-cta">🥚 VER CATÁLOGO COMPLETO</a>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-logo">
+            <img src="images/a712dec5d0.png" alt="Grupo Ovos de Ouro">
+            <span>GRUPO OVOS DE OURO</span>
+        </div>
+        <p>Ovos galados férteis das melhores raças do Brasil | Genética premium desde 2018</p>
+        <p>📱 WhatsApp: (42) 98817-7732 | 📧 contato@grupoovosdeouro.com</p>
+        <p style="margin-top:15px;color:#444;">© 2025 Grupo Ovos de Ouro. Todos os direitos reservados.</p>
+        <p style="color:#444;font-size:11px;margin-top:5px;">🔒 Pagamento 100% seguro | Envio para todo o Brasil</p>
+    </div>
+</footer>
+
+<!-- ===== NOTIFICATION POPUP ===== -->
+<div class="notification-popup" id="notifPopup">
+    <div class="notif-icon" id="notifIcon">🥚</div>
+    <div class="notif-text" id="notifText"></div>
+</div>
+
+<script>
+// ===== FILTER =====
+function filterProducts(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
         }
+    });
+}
 
-        audioInput.onchange = evt => {
-            if (audioInput.files[0]) {
-                audioContent.classList.add('hidden');
-                audioPreview.classList.remove('hidden');
-            }
-        }
+// ===== ONLINE COUNTER =====
+setInterval(() => {
+    const el = document.getElementById('onlineCount');
+    let n = parseInt(el.textContent);
+    n += Math.floor(Math.random() * 7) - 3;
+    if (n < 280) n = 280 + Math.floor(Math.random() * 20);
+    if (n > 450) n = 450 - Math.floor(Math.random() * 20);
+    el.textContent = n;
+}, 5000);
 
-        function startNeuralProcess() {
-            const name = document.getElementById('targetName').value;
-            if(!name || !fileInput.files[0]) {
-                alert("Por favor, preencha o nome e selecione uma foto.");
-                return;
-            }
+// ===== AUTO SCROLL TESTIMONIALS =====
+const track = document.getElementById('testimonialsTrack');
+let scrollDir = 1;
+setInterval(() => {
+    track.scrollLeft += scrollDir * 1;
+    if (track.scrollLeft >= track.scrollWidth - track.clientWidth) scrollDir = -1;
+    if (track.scrollLeft <= 0) scrollDir = 1;
+}, 30);
 
-            document.getElementById('display-name').innerText = name;
-            const overlay = document.getElementById('loader-overlay');
-            const processingBox = document.getElementById('processing-box');
-            const successCard = document.getElementById('success-card');
-            const status = document.getElementById('loader-status');
-            const subtext = document.getElementById('loader-subtext');
-            const bar = document.getElementById('bar-fill');
-            
-            overlay.style.display = 'flex';
-            
-            const steps = [
-                { p: 15, t: "Mapeando Face", s: "Localizando 1.200 pontos de expressão..." },
-                { p: 40, t: "DNA Vocal", s: "Analisando frequência de " + name },
-                { p: 70, t: "Renderizando", s: "Clonando expressões neurais e olhar..." },
-                { p: 100, t: "Concluído", s: "Sincronização Finalizada!" }
-            ];
+// ===== NOTIFICATION SYSTEM =====
+const nomes = [
+    'Ana Clara', 'Carlos Eduardo', 'Mariana Silva', 'José Roberto', 'Fernanda Lima',
+    'Pedro Henrique', 'Juliana Costa', 'Rafael Santos', 'Patrícia Oliveira', 'Lucas Almeida',
+    'Beatriz Souza', 'Thiago Ferreira', 'Camila Rodrigues', 'Bruno Nascimento', 'Larissa Gomes',
+    'Gustavo Pereira', 'Amanda Barbosa', 'Felipe Martins', 'Isabela Rocha', 'Diego Carvalho'
+];
 
-            let currentStep = 0;
-            const interval = setInterval(() => {
-                if(currentStep < steps.length) {
-                    bar.style.width = steps[currentStep].p + "%";
-                    status.innerText = steps[currentStep].t;
-                    subtext.innerText = steps[currentStep].s;
-                    currentStep++;
-                } else {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        processingBox.style.display = 'none';
-                        successCard.style.display = 'block';
-                    }, 500);
-                }
-            }, 1800);
-        }
+const racas = [
+    'Brahma Light', 'Índio Gigante', 'Brahma Negra', 'Brahma Dark', 'Marreco Pom Pom',
+    'Brahma Marmorizado', 'Marreco Rouen', 'Pato Gigante Alemão', 'Belgian Mottled',
+    'Brahma Prata', 'Cara de Palhaço', 'Galinha Frisada', 'Gigante Alemão',
+    'Cochinchina Barrada', 'Ameraucana', 'Brahma Barrada', 'Brahma Perdiz Azul',
+    'Brahma Silver', 'Caipira Melhorado', 'Anma Super Caipira', 'Siamesa',
+    'Pavão Azul', 'Pavão Branco', 'Braeckel Camurça', 'Sebright Prata'
+];
 
-        function redirectToCheckout() {
-            window.location.href = "SEU_LINK_DE_PAGAMENTO_AQUI"; 
-        }
-    </script>
+const estados = [
+    'São Paulo - SP', 'Rio de Janeiro - RJ', 'Minas Gerais - MG', 'Bahia - BA',
+    'Paraná - PR', 'Rio Grande do Sul - RS', 'Santa Catarina - SC', 'Goiás - GO',
+    'Ceará - CE', 'Pernambuco - PE', 'Pará - PA', 'Maranhão - MA',
+    'Distrito Federal - DF', 'Mato Grosso - MT', 'Mato Grosso do Sul - MS',
+    'Espírito Santo - ES', 'Piauí - PI', 'Tocantins - TO', 'Alagoas - AL', 'Sergipe - SE'
+];
+
+const cidades = [
+    'Campinas - SP', 'Curitiba - PR', 'Belo Horizonte - MG', 'Salvador - BA',
+    'Goiânia - GO', 'Fortaleza - CE', 'Recife - PE', 'Porto Alegre - RS',
+    'Florianópolis - SC', 'Manaus - AM', 'Belém - PA', 'Brasília - DF',
+    'Ribeirão Preto - SP', 'Uberlândia - MG', 'Londrina - PR', 'Joinville - SC',
+    'São José dos Campos - SP', 'Natal - RN', 'João Pessoa - PB', 'Juiz de Fora - MG',
+    'Maringá - PR', 'Sorocaba - SP', 'Vitória - ES', 'Teresina - PI'
+];
+
+const tempos = ['agora mesmo', 'há 2 min', 'há 5 min', 'há 8 min', 'há 12 min'];
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function showNotification() {
+    const popup = document.getElementById('notifPopup');
+    const icon = document.getElementById('notifIcon');
+    const text = document.getElementById('notifText');
+    
+    const tipo = Math.random();
+    
+    if (tipo < 0.5) {
+        // Compra
+        const nome = rand(nomes);
+        const raca = rand(racas);
+        const tempo = rand(tempos);
+        icon.textContent = '🛒';
+        text.innerHTML = `<strong>${nome}</strong> acabou de comprar 1 dúzia de <strong>${raca}</strong><span class="notif-time">${tempo}</span>`;
+    } else {
+        // Envio
+        const cidade = rand(cidades);
+        const raca = rand(racas);
+        icon.textContent = '📦';
+        text.innerHTML = `1 dúzia de <strong>${raca}</strong> foi enviada para <strong>${cidade}</strong><span class="notif-time">agora mesmo</span>`;
+    }
+    
+    popup.classList.add('show');
+    
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 5000);
+}
+
+// Primeira notificação após 5s, depois a cada 8-15s
+setTimeout(showNotification, 5000);
+setInterval(showNotification, Math.random() * 7000 + 8000);
+
+// Repetir intervalo aleatório
+function scheduleNext() {
+    setTimeout(() => {
+        showNotification();
+        scheduleNext();
+    }, Math.random() * 7000 + 8000);
+}
+setTimeout(scheduleNext, 12000);
+</script>
 
 </body>
 </html>
