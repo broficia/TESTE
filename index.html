@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Criatório Ovos de Ouro | Catálogo de Ovos Férteis Premium</title>
 <meta name="description" content="Catálogo completo de ovos férteis para eclosão. Pavões, Galinhas, Perus, Angolas, Faisões e muito mais. Envio Sedex para todo o Brasil.">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,8 +16,8 @@
 --font-d:'Cinzel',serif;--font-b:'Poppins',sans-serif;
 --radius:12px;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.6;overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);line-height:1.6;overflow-x:hidden;width:100%;max-width:100vw}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:4px}
@@ -31,8 +31,8 @@ backdrop-filter:blur(20px);
 .header-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .logo{font-family:var(--font-d);font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo span{font-size:.8rem;display:block;font-weight:400;letter-spacing:3px;-webkit-text-fill-color:var(--text2)}
-.search-box{position:relative;flex:1;max-width:400px}
-.search-box input{width:100%;padding:10px 16px 10px 42px;border-radius:50px;border:1px solid rgba(201,149,43,.2);background:var(--bg2);color:var(--text);font-family:var(--font-b);font-size:.9rem;transition:.3s}
+.search-box{position:relative;flex:1;max-width:400px;min-width:0}
+.search-box input{width:100%;padding:10px 16px 10px 42px;border-radius:50px;border:1px solid rgba(201,149,43,.2);background:var(--bg2);color:var(--text);font-family:var(--font-b);font-size:16px;transition:.3s}
 .search-box input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 20px rgba(201,149,43,.15)}
 .search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text2);width:18px;height:18px}
 
@@ -90,16 +90,16 @@ border-radius:var(--radius);padding:20px;transition:.3s;position:relative;overfl
 .item-card:hover::before{opacity:1}
 .item-card.selected{border-color:var(--gold);box-shadow:0 0 25px rgba(201,149,43,.15)}
 .item-card.selected::before{opacity:1}
-.item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:8px}
 .item-name{font-family:var(--font-d);font-size:1rem;color:var(--cream);font-weight:600;line-height:1.3}
 .item-unit{font-size:.7rem;color:var(--text2);margin-top:2px}
-.item-price{text-align:right}
+.item-price{text-align:right;flex-shrink:0}
 .item-price .price-val{font-family:var(--font-d);font-size:1.2rem;font-weight:700;color:var(--gold-light)}
 .item-price .price-unit{font-size:.65rem;color:var(--text2);display:block}
 .item-controls{display:flex;align-items:center;gap:10px;margin-top:12px}
 .qty-btn{
 width:34px;height:34px;border-radius:8px;border:1px solid rgba(201,149,43,.2);background:var(--bg4);
-color:var(--gold);font-size:1.1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;
+color:var(--gold);font-size:1.1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .qty-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
 .qty-btn:active{transform:scale(.9)}
@@ -154,7 +154,7 @@ background:linear-gradient(135deg,rgba(201,149,43,.05),transparent);border-radiu
 .form-group label{display:block;font-size:.8rem;color:var(--gold);margin-bottom:6px;font-weight:500}
 .form-group input{
 width:100%;padding:12px 16px;border-radius:10px;border:1px solid rgba(201,149,43,.15);
-background:var(--bg4);color:var(--text);font-family:var(--font-b);font-size:.9rem;transition:.3s;
+background:var(--bg4);color:var(--text);font-family:var(--font-b);font-size:16px;transition:.3s;
 }
 .form-group input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 15px rgba(201,149,43,.1)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -206,11 +206,16 @@ box-shadow:0 5px 25px rgba(37,211,102,.4);cursor:pointer;transition:.3s;border:n
 
 @media(max-width:600px){
 .header-inner{flex-direction:column;text-align:center}
-.search-box{max-width:100%}
+.search-box{max-width:100%;width:100%}
 .items-grid{grid-template-columns:1fr}
 .cart-inner{flex-direction:column;text-align:center}
 .form-row{grid-template-columns:1fr}
 .info-banner{grid-template-columns:1fr}
+.hero{padding:40px 16px}
+.hero h1{font-size:1.5rem}
+.catalog{padding:0 12px 30px}
+.item-card{padding:16px}
+.categories-nav{padding:10px 12px}
 }
 </style>
 </head>
@@ -323,56 +328,56 @@ let nomeCliente="";
 
 const catalog=[
 {cat:"Pavões",emoji:"🦚",info:"Valores por unidade (1 ovo)",unit:"ovo",qty:1,items:[
-{name:"Pavão Azul",price:49},{name:"Pavão Ombros Negros",price:57},{name:"Pavão Branco",price:69},
-{name:"Pavão Arlequim",price:72},{name:"Pavão Spalding",price:80},{name:"Pavão Negro",price:88}
+{name:"Pavão Azul",price:47.90},{name:"Pavão Ombros Negros",price:54.90},{name:"Pavão Branco",price:67.90},
+{name:"Pavão Arlequim",price:74.90},{name:"Pavão Spalding",price:82.90},{name:"Pavão Negro",price:89.90}
 ]},
 {cat:"Galinhas Ornamentais",emoji:"🐔",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Mini Galinha (Bantam)",price:67},{name:"Nagasaki",price:89},{name:"Brahma (Diversas Cores)",price:94},
-{name:"Polonesa (Topete)",price:79},{name:"Sedosa (Silkie)",price:69},{name:"Campine Dourada",price:57},
-{name:"Cara de Palhaço (Faverolles)",price:89},{name:"Appenzeller Spitzhauben",price:69},
-{name:"Ameraucana (Ovos Azuis)",price:93},{name:"Ayam Cemani (Ave Totalmente Negra)",price:139},
-{name:"Cochinchina Gigante",price:87},{name:"Orpington Buff",price:82},{name:"Wyandotte Silver",price:89},
-{name:"Hamburg Prateada",price:69},{name:"Moroseta Japonesa",price:99},{name:"Padovana",price:77},
-{name:"Sultan Branca",price:129},{name:"Fênix (Cauda Longa)",price:140}
+{name:"Mini Galinha (Bantam)",price:64.90},{name:"Nagasaki",price:89.90},{name:"Brahma (Diversas Cores)",price:94.90},
+{name:"Polonesa (Topete)",price:79.90},{name:"Sedosa (Silkie)",price:69.90},{name:"Campine Dourada",price:54.90},
+{name:"Cara de Palhaço (Faverolles)",price:87.90},{name:"Appenzeller Spitzhauben",price:67.90},
+{name:"Ameraucana (Ovos Azuis)",price:92.90},{name:"Ayam Cemani (Ave Totalmente Negra)",price:139.90},
+{name:"Cochinchina Gigante",price:84.90},{name:"Orpington Buff",price:79.90},{name:"Wyandotte Silver",price:89.90},
+{name:"Hamburg Prateada",price:67.90},{name:"Moroseta Japonesa",price:97.90},{name:"Padovana",price:74.90},
+{name:"Sultan Branca",price:127.90},{name:"Fênix (Cauda Longa)",price:139.90}
 ]},
 {cat:"Galinhas Combate / Mestiços",emoji:"🐓",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Mestiço Combatente",price:75},{name:"Shamo",price:123},{name:"Thai Game",price:148},
-{name:"Asil (Aseel)",price:149},{name:"Malaio Brasileiro",price:103}
+{name:"Mestiço Combatente",price:74.90},{name:"Shamo",price:119.90},{name:"Thai Game",price:144.90},
+{name:"Asil (Aseel)",price:147.90},{name:"Malaio Brasileiro",price:104.90}
 ]},
 {cat:"Galinhas Produção / Corte",emoji:"🍗",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Caipira Melhorada (Pescoço Pelado)",price:149},{name:"Índio Gigante",price:147},
-{name:"Red Rhode Island",price:89},{name:"Legorne x Rhode Island",price:74},
-{name:"Plymouth Rock Barrada",price:69},{name:"Sussex Tricolor",price:79},
-{name:"New Hampshire",price:59},{name:"Embrapa 051 (Caipirão)",price:49}
+{name:"Caipira Melhorada (Pescoço Pelado)",price:149.90},{name:"Índio Gigante",price:144.90},
+{name:"Red Rhode Island",price:89.90},{name:"Legorne x Rhode Island",price:72.90},
+{name:"Plymouth Rock Barrada",price:67.90},{name:"Sussex Tricolor",price:77.90},
+{name:"New Hampshire",price:57.90},{name:"Embrapa 051 (Caipirão)",price:47.90}
 ]},
 {cat:"Perus",emoji:"🦃",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Peru Branco Gigante",price:139},{name:"Peru Marrom (Bronze)",price:145},
-{name:"Mix Peru (Cores Variadas)",price:110},{name:"Peru Bourbon Red",price:149},
-{name:"Peru Preto Espanhol",price:148},{name:"Peru Blue Slate",price:150}
+{name:"Peru Branco Gigante",price:137.90},{name:"Peru Marrom (Bronze)",price:142.90},
+{name:"Mix Peru (Cores Variadas)",price:109.90},{name:"Peru Bourbon Red",price:147.90},
+{name:"Peru Preto Espanhol",price:144.90},{name:"Peru Blue Slate",price:149.90}
 ]},
 {cat:"Angolas (Capotes)",emoji:"🔵",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Angola Coral Blue",price:90},{name:"Angola Chocolate",price:96},{name:"Angola Branca",price:86},
-{name:"Angola Lavanda",price:89},{name:"Angola Royal Purple",price:94},
-{name:"Angola Azul Pérola",price:93},{name:"Angola Pintada Comum",price:57}
+{name:"Angola Coral Blue",price:89.90},{name:"Angola Chocolate",price:94.90},{name:"Angola Branca",price:84.90},
+{name:"Angola Lavanda",price:87.90},{name:"Angola Royal Purple",price:92.90},
+{name:"Angola Azul Pérola",price:91.90},{name:"Angola Pintada Comum",price:54.90}
 ]},
 {cat:"Faisões",emoji:"🦆",info:"Valores por dúzia (12 ovos)",unit:"dúzia",qty:12,items:[
-{name:"Faisão Mix Surpresa",price:149},{name:"Faisão Coleira Comum",price:148},
-{name:"Faisão Coleira Azul",price:150},{name:"Faisão Coleira Buff",price:146},
-{name:"Faisão Coleira Verde",price:350},{name:"Faisão Branco",price:400},
-{name:"Faisão Nevada",price:148},{name:"Faisão Lady Amherst",price:150},
-{name:"Faisão Dourado (Golden)",price:141},{name:"Faisão Prateado (Silver)",price:147}
+{name:"Faisão Mix Surpresa",price:147.90},{name:"Faisão Coleira Comum",price:144.90},
+{name:"Faisão Coleira Azul",price:149.90},{name:"Faisão Coleira Buff",price:142.90},
+{name:"Faisão Coleira Verde",price:149.90},{name:"Faisão Branco",price:149.90},
+{name:"Faisão Nevada",price:144.90},{name:"Faisão Lady Amherst",price:147.90},
+{name:"Faisão Dourado (Golden)",price:139.90},{name:"Faisão Prateado (Silver)",price:144.90}
 ]},
 {cat:"Codornas & Aves Silvestres",emoji:"🐦",info:"Confira a unidade de cada item abaixo",unit:"especial",qty:0,items:[
-{name:"Codorna Chinesa (Pintada)",price:45,customUnit:"30 ovos",customQty:30},
-{name:"Codorna Japonesa (Postura)",price:50,customUnit:"30 ovos",customQty:30},
-{name:"Codorna Bob White",price:62,customUnit:"dúzia (12 ovos)",customQty:12},
-{name:"Bankiva (Ancestral da Galinha)",price:79,customUnit:"dúzia (12 ovos)",customQty:12},
-{name:"Perdiz Chukar",price:89,customUnit:"dúzia (12 ovos)",customQty:12}
+{name:"Codorna Chinesa (Pintada)",price:42.90,customUnit:"30 ovos",customQty:30},
+{name:"Codorna Japonesa (Postura)",price:47.90,customUnit:"30 ovos",customQty:30},
+{name:"Codorna Bob White",price:59.90,customUnit:"dúzia (12 ovos)",customQty:12},
+{name:"Bankiva (Ancestral da Galinha)",price:77.90,customUnit:"dúzia (12 ovos)",customQty:12},
+{name:"Perdiz Chukar",price:87.90,customUnit:"dúzia (12 ovos)",customQty:12}
 ]},
 {cat:"Mix Especiais & Combos",emoji:"🎁",info:"Valores por dúzia (12 ovos) — Ofertas exclusivas!",unit:"dúzia",qty:12,items:[
-{name:"Mix de Cores (Galinhas Variadas)",price:110},{name:"Balão Sertaneja GSB",price:140},
-{name:"Combo Ornamentais (3 Raças)",price:148},{name:"Combo Poedeiras (3 Raças)",price:146},
-{name:"Combo Iniciante (2 Raças à Escolha)",price:129}
+{name:"Mix de Cores (Galinhas Variadas)",price:109.90},{name:"Balão Sertaneja GSB",price:137.90},
+{name:"Combo Ornamentais (3 Raças)",price:144.90},{name:"Combo Poedeiras (3 Raças)",price:142.90},
+{name:"Combo Iniciante (2 Raças à Escolha)",price:127.90}
 ]}
 ];
 
@@ -483,20 +488,19 @@ const cep=document.getElementById("inputCep").value.trim();
 if(!nome||!cidade||!estado||!cep){alert("Por favor, preencha todos os campos!");return}
 if(cep.replace(/\D/g,"").length<8){alert("CEP inválido! Digite os 8 números.");return}
 nomeCliente=nome;
-// Gerar frete variado baseado no CEP (máximo R$59)
 const cepNum=parseInt(cep.replace(/\D/g,""));
-const seed=(cepNum%47)+7;
-const base=25+((seed*3)%35);
-freteCalculado=Math.min(base,59);
-// Ajuste por região
+const rand1=((cepNum*13+7)%100)/100;
+const rand2=((cepNum*31+17)%100)/100;
 const uf=estado.toUpperCase();
 const ne=["PE","BA","CE","RN","PB","AL","SE","MA","PI"];
 const se=["SP","RJ","MG","ES"];
 const s=["PR","SC","RS"];
-if(ne.includes(uf))freteCalculado=Math.min(freteCalculado,42);
-else if(se.includes(uf))freteCalculado=Math.min(25+((seed*2)%20),49);
-else if(s.includes(uf))freteCalculado=Math.min(30+((seed)%22),52);
-else freteCalculado=Math.min(35+((seed)%25),59);
+if(ne.includes(uf)){freteCalculado=parseFloat((18+rand1*22).toFixed(2))}
+else if(se.includes(uf)){freteCalculado=parseFloat((22+rand1*26).toFixed(2))}
+else if(s.includes(uf)){freteCalculado=parseFloat((25+rand1*25).toFixed(2))}
+else{freteCalculado=parseFloat((28+rand1*27).toFixed(2))}
+if(freteCalculado>55)freteCalculado=55;
+if(freteCalculado<18)freteCalculado=18;
 
 const items=getCartItems();
 const subtotal=items.reduce((a,b)=>a+b.total,0);
