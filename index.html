@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <title>Painel Clash Royale - Domine as Arenas com Elixir Infinito</title>
-    <meta name="description" content="O melhor painel de elixir para Clash Royale. Suba de arena rapidamente, domine suas batalhas e garanta vitórias com 100% de segurança. Planos a partir de R$ 5,99.">
+    <meta name="description" content="O melhor painel de elixir Infinito para Clash Royale. Suba de arena rapidamente, domine suas batalhas e garanta vitórias com 100% de segurança. Planos a partir de R$ 5,99.">
     <meta property="og:title" content="Painel Clash Royale - Domine as Arenas">
     <meta property="og:description" content="O melhor painel de elixir para Clash Royale. Suba de arena rapidamente com 100% de segurança.">
     <meta property="og:type" content="website">
@@ -23,15 +23,33 @@
     <link rel="stylesheet" crossorigin="" href="css/index-D_kqB7ER.css">
     
     <style>
-      /* Força o container do vídeo a ocupar o molde inteiro sem sobras */
-      .vsl-full-frame {
-        width: 100% !important;
-        height: 100% !important;
+      /* Container do vídeo: encaixa perfeitamente no mockup com cantos arredondados */
+      .vsl-video-wrapper {
         position: absolute !important;
         top: 0 !important;
         left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 24px !important;
+        overflow: hidden !important;
+        z-index: 50 !important;
+        background: #000 !important;
+        pointer-events: auto !important;
+      }
+      .vsl-video-wrapper iframe {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
         border: none !important;
-        border-radius: 24px !important; /* Arredondamento para casar com o celular */
+        pointer-events: auto !important;
+      }
+      /* Garante que o container do mockup não corte e aceite o vídeo */
+      .aspect-\[9\/16\] {
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
       }
     </style>
   </head>
@@ -40,26 +58,37 @@
 
     <script>
       (function() {
+        var injected = false;
         var checkExist = setInterval(function() {
-          // Busca o elemento interno do "celular" onde o vídeo deve morar
+          if (injected) { clearInterval(checkExist); return; }
+
+          // Localiza o container interno do mockup do celular (formato 9/16)
           var container = document.querySelector('.aspect-\\[9\\/16\\]');
           
-          if (container) {
-            // Limpa o que tiver dentro e injeta o iframe ocupando tudo
+          if (container && !container.querySelector('.vsl-video-wrapper')) {
+            // Injeta o player do Vimeo já com autoplay MUTADO (começa rodando sem som)
+            // O usuário clica no player do próprio Vimeo para ativar o som depois.
             container.innerHTML = `
-              <iframe class="vsl-full-frame" 
-                src="https://player.vimeo.com/video/1132679540?badge=0&autopause=0&player_id=0&app_id=58479" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>`;
+              <div class="vsl-video-wrapper">
+                <iframe
+                  src="https://player.vimeo.com/video/1132679540?autoplay=1&muted=1&playsinline=1&badge=0&autopause=0&player_id=0&app_id=58479"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                  allowfullscreen>
+                </iframe>
+              </div>`;
             
-            // Remove paddings indesejados que o React possa ter colocado no molde
-            container.style.padding = "0";
-            container.style.overflow = "hidden";
-            
+            // Garante que o container pai não bloqueie o clique
+            if (container.parentElement) {
+              container.parentElement.style.pointerEvents = "auto";
+            }
+
+            injected = true;
             clearInterval(checkExist);
           }
         }, 100);
+
+        // Para de tentar depois de 15s pra não ficar rodando pra sempre
+        setTimeout(function() { clearInterval(checkExist); }, 15000);
       })();
     </script>
 </body></html>
