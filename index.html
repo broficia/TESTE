@@ -1,234 +1,618 @@
-<!DOCTYPE html><html lang="pt-PT"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Monaia Pagamentos - Sistema Oficial</title>
-    <link rel="stylesheet" href="css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-    <style>
-        :root{--primary:#00d4ff;--primary-glow:#0091ff;--primary-deep:#0066cc;--secondary:#28cd41;--secondary-glow:#1fa835;--bg-dark:#050507;--card-bg:rgba(14,14,18,.85);--card-border:rgba(255,255,255,.06);--text-gray:#8e8e93;--text-light:#aeaeb2;--text-dim:#636366;--danger:#ff453a;--warning:#ffd60a}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
-        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 20% -10%,rgba(0,212,255,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 110%,rgba(0,102,204,.05) 0%,transparent 60%);pointer-events:none;z-index:0}
-        body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);pointer-events:none;z-index:0}
-        .orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.4;pointer-events:none;z-index:0;animation:orbFloat 20s ease-in-out infinite}
-        .orb-1{width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,.12),transparent 70%);top:-100px;left:-50px}
-        .orb-2{width:250px;height:250px;background:radial-gradient(circle,rgba(0,102,204,.08),transparent 70%);bottom:-80px;right:-60px;animation-delay:-7s}
-        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(.95)}}
-        #notification-container{position:fixed;top:15px;width:100%;z-index:9999;pointer-events:none;display:flex;flex-direction:column;align-items:center}
-        .notification{background:rgba(255,255,255,.97);backdrop-filter:blur(30px) saturate(180%);color:#1c1c1e;padding:14px 18px;border-radius:22px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.45);animation:slideIn .5s cubic-bezier(.16,1,.3,1);width:88%;max-width:340px}
-        .notification img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,.06)}
-        .notification .notif-text strong{display:block;font-size:13px;font-weight:700}
-        .notification .notif-text span{font-size:12px;color:var(--text-dim)}
-        .screen{width:92%;max-width:420px;display:none;padding:20px 0;position:relative;z-index:1}
-        .active{display:block;animation:fadeIn .6s cubic-bezier(.16,1,.3,1)}
-        .main-card{background:var(--card-bg);backdrop-filter:blur(40px) saturate(150%);padding:36px 28px;border-radius:32px;border:1px solid var(--card-border);text-align:center;box-shadow:0 32px 64px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
-        .main-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(0,212,255,.5) 30%,rgba(0,145,255,.3) 70%,transparent 95%)}
-        .logo-container{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px;position:relative;z-index:1}
-        .logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary-glow),var(--primary-deep));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 8px 24px rgba(0,212,255,.3)}
-        .logo-text h2{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;background:linear-gradient(135deg,#fff 30%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .logo-text span{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;font-weight:600}
-        .badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(40,205,65,.12),rgba(40,205,65,.06));color:var(--secondary);padding:6px 14px;border-radius:20px;font-size:10.5px;font-weight:700;margin-top:8px;border:1px solid rgba(40,205,65,.18);text-transform:uppercase;letter-spacing:1px;position:relative;z-index:1}
-        .badge i{font-size:8px;animation:badgePulse 2s ease-in-out infinite}
-        @keyframes badgePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-        .amount-display{margin:28px 0;padding:28px 22px;background:linear-gradient(145deg,rgba(0,212,255,.06),rgba(0,102,204,.03));border-radius:24px;border:1px solid rgba(0,212,255,.1);position:relative;z-index:1;overflow:hidden}
-        .amount-display .label{font-size:10.5px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2.5px;font-weight:700;margin-bottom:10px}
-        .amount-display .value{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;letter-spacing:-2px;background:linear-gradient(135deg,#fff 20%,var(--primary) 60%,var(--primary-glow) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .amount-display .currency-tag{display:inline-block;margin-top:8px;font-size:11px;color:var(--primary);background:rgba(0,212,255,.08);padding:4px 10px;border-radius:8px;font-weight:600}
-        .spinner-container{position:relative;width:64px;height:64px;margin:28px auto}
-        .spinner{width:64px;height:64px;border:3px solid rgba(255,255,255,.04);border-left-color:var(--primary);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
-        .spinner-inner{position:absolute;inset:8px;border:2px solid transparent;border-right-color:rgba(0,212,255,.3);border-bottom-color:rgba(0,212,255,.3);border-radius:50%;animation:spin 1.2s linear infinite reverse}
-        .spinner-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;background:var(--primary);border-radius:50%;box-shadow:0 0 12px var(--primary)}
-        .receipt{background:linear-gradient(180deg,#f8f8fa 0%,#f0f0f5 100%);color:#1c1c1e;border-radius:24px;padding:24px;text-align:left;margin-top:20px;box-shadow:inset 0 2px 4px rgba(0,0,0,.03);position:relative;z-index:1;overflow:hidden}
-        .receipt::before{content:'';position:absolute;top:0;left:20px;right:20px;height:3px;background:linear-gradient(90deg,var(--primary),var(--primary-glow),var(--primary));border-radius:0 0 4px 4px}
-        .receipt-header{text-align:center;padding:10px 0 16px;border-bottom:1.5px dashed #d1d1d6;margin-bottom:4px}
-        .receipt-header i{font-size:22px;background:linear-gradient(135deg,var(--primary),var(--primary-glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px;display:block}
-        .receipt-header h4{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#1c1c1e;text-transform:uppercase;letter-spacing:2px}
-        .receipt-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e8e8ed;padding:15px 0;font-size:13px}
-        .receipt-row:last-child{border-bottom:none}
-        .receipt-label{color:#8e8e93;font-weight:500;font-size:12px}
-        .receipt-value{font-weight:700;text-align:right;color:#1c1c1e;font-family:'Space Grotesk',sans-serif}
-        .receipt-value.highlight{color:var(--primary-glow);font-size:16px}
-        .input-group{margin-bottom:14px;position:relative}
-        .input-group i.fa-icon{position:absolute;left:19px;top:50%;transform:translateY(-50%);color:#3a3a3c;font-size:17px;transition:all .4s;z-index:2}
-        .input-group:focus-within i.fa-icon,.input-group.filled i.fa-icon{color:var(--primary)}
-        input{width:100%;padding:18px 16px 18px 54px;background:rgba(26,26,29,.8);border:1.5px solid rgba(255,255,255,.06);border-radius:18px;color:#fff;box-sizing:border-box;font-size:15px;font-family:'Inter',sans-serif;font-weight:500;outline:none;transition:all .4s}
-        input:focus{border-color:rgba(0,212,255,.5);box-shadow:0 0 0 4px rgba(0,212,255,.08)}
-        input::placeholder{color:#3a3a3c}
-        input.filled{border-color:rgba(0,212,255,.35);background:rgba(0,212,255,.06)}
-        .btn-confirm{width:100%;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-glow),var(--primary-deep));background-size:200% 200%;animation:gradientShift 4s ease infinite;border:none;border-radius:20px;color:#fff;font-weight:800;font-size:14px;cursor:pointer;margin-top:14px;text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;position:relative;overflow:hidden;transition:all .3s;box-shadow:0 8px 32px rgba(0,212,255,.25);z-index:1}
-        @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-        .btn-confirm:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,212,255,.35)}
-        .btn-confirm::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:shimmer 3s infinite}
-        .btn-confirm .btn-content{display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:2}
-        .btn-success{background:linear-gradient(135deg,var(--secondary),var(--secondary-glow),#179c2d);background-size:200% 200%;box-shadow:0 8px 32px rgba(40,205,65,.25)}
-        .btn-success:hover{box-shadow:0 16px 40px rgba(40,205,65,.35)}
-        .security-box{background:linear-gradient(135deg,rgba(255,214,10,.06),rgba(255,214,10,.02));border:1px solid rgba(255,214,10,.12);padding:18px;border-radius:18px;margin:18px 0;display:flex;align-items:flex-start;gap:14px;text-align:left;position:relative;z-index:1}
-        .security-box i{color:var(--warning);font-size:20px;margin-top:1px;flex-shrink:0}
-        .security-box p{margin:0;font-size:12.5px;color:var(--text-light);line-height:1.7}
-        .security-box strong{color:#fff;font-weight:700}
-        .total-box{background:linear-gradient(145deg,rgba(40,205,65,.1),rgba(40,205,65,.03));border:1px solid rgba(40,205,65,.12);border-radius:22px;padding:24px;margin:18px 0;text-align:center;position:relative;z-index:1;overflow:hidden}
-        .total-box .label{font-size:10px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2.5px;font-weight:700}
-        .total-box .value{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--secondary);margin-top:6px;letter-spacing:-1px}
-        .timer-box{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0;padding:12px 16px;background:linear-gradient(135deg,rgba(255,69,58,.08),rgba(255,69,58,.03));border-radius:14px;border:1px solid rgba(255,69,58,.1);position:relative;z-index:1}
-        .timer-box i{color:var(--danger);animation:pulse 1.5s ease-in-out infinite;font-size:14px}
-        .timer{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--danger);font-size:16px;letter-spacing:1px}
-        .timer-label{font-size:12px;color:var(--text-gray);font-weight:500}
-        .status-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px;position:relative;z-index:1}
-        .status-icon.success{background:linear-gradient(135deg,rgba(40,205,65,.15),rgba(40,205,65,.05));color:var(--secondary);border:2px solid rgba(40,205,65,.2);animation:statusPop .6s cubic-bezier(.16,1,.3,1)}
-        .status-icon.warning{background:linear-gradient(135deg,rgba(255,214,10,.15),rgba(255,214,10,.05));color:var(--warning);border:2px solid rgba(255,214,10,.2);animation:statusPop .6s cubic-bezier(.16,1,.3,1)}
-        @keyframes statusPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-        .screen-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#fff 60%,rgba(255,255,255,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
-        .screen-subtitle{font-size:13px;color:var(--text-gray);line-height:1.6;margin-bottom:18px;position:relative;z-index:1}
-        .card-footer{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:#3a3a3c;position:relative;z-index:1}
-        .card-footer i{color:var(--secondary);font-size:11px}
-        .progress-steps{display:flex;justify-content:center;gap:8px;margin-bottom:24px;position:relative;z-index:1}
-        .step-dot{width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,.06);transition:all .5s}
-        .step-dot.active{background:linear-gradient(90deg,var(--primary),var(--primary-glow));width:48px;box-shadow:0 0 12px rgba(0,212,255,.3)}
-        .step-dot.done{background:var(--secondary)}
-        .styled-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:16px 0;position:relative;z-index:1}
-        .live-indicator{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim);margin-top:12px;position:relative;z-index:1}
-        .live-dot{width:6px;height:6px;background:var(--secondary);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 8px rgba(40,205,65,.4)}
-        a.btn-confirm{display:block;text-decoration:none;text-align:center}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        @keyframes slideIn{from{transform:translateY(-100px) scale(.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes shimmer{to{left:100%}}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-    </style>
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>Monaia Pagamentos — Sistema Oficial PT</title>
+<link rel="stylesheet" href="css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#00d4ff;--primary-glow:#0091ff;--primary-deep:#0066cc;
+  --secondary:#28cd41;--secondary-glow:#1fa835;
+  --bg-dark:#050507;--bg-surface:#0c0c10;
+  --card-bg:rgba(14,14,18,0.85);--card-border:rgba(255,255,255,0.06);
+  --glass:rgba(255,255,255,0.03);
+  --text-gray:#8e8e93;--text-light:#aeaeb2;--text-dim:#636366;
+  --danger:#ff453a;--warning:#ffd60a;--gold:#d4a853;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-dark);color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 20% -10%,rgba(0,212,255,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 110%,rgba(0,102,204,0.05) 0%,transparent 60%),radial-gradient(circle at 50% 50%,rgba(0,212,255,0.015) 0%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%);pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.4;pointer-events:none;z-index:0;animation:orbFloat 20s ease-in-out infinite}
+.orb-1{width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,0.12),transparent 70%);top:-100px;left:-50px}
+.orb-2{width:250px;height:250px;background:radial-gradient(circle,rgba(0,102,204,0.08),transparent 70%);bottom:-80px;right:-60px;animation-delay:-7s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(0.95)}}
+
+/* TOP BAR — SSL + IP + última atualização */
+.top-bar{position:fixed;top:0;left:0;right:0;z-index:9998;background:linear-gradient(180deg,rgba(5,5,7,0.95),rgba(5,5,7,0.85));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(40,205,65,0.15);padding:7px 14px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--text-gray);font-weight:600;letter-spacing:.3px}
+.top-bar .ssl-info{display:flex;align-items:center;gap:6px;color:var(--secondary)}
+.top-bar .ssl-info i{font-size:10px;animation:pulse 2.5s infinite}
+.top-bar .ip-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim)}
+.top-bar .sys-status{display:flex;align-items:center;gap:5px}
+.top-bar .sys-dot{width:6px;height:6px;background:var(--secondary);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 6px rgba(40,205,65,0.6)}
+@media(max-width:380px){.top-bar .ip-info{display:none}}
+
+/* LIVE USERS BAR */
+.live-users-bar{position:fixed;top:34px;left:0;right:0;z-index:9997;background:linear-gradient(90deg,rgba(40,205,65,0.12),rgba(40,205,65,0.04));backdrop-filter:blur(15px);border-bottom:1px solid rgba(40,205,65,0.18);padding:8px 14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:#fff;font-weight:600}
+.live-users-bar .live-pulse{width:8px;height:8px;background:var(--secondary);border-radius:50%;animation:pulse 1.5s infinite;box-shadow:0 0 10px var(--secondary)}
+.live-users-bar strong{color:var(--secondary);font-weight:800;font-family:'JetBrains Mono',monospace}
+
+#notification-container{position:fixed;top:80px;width:100%;z-index:9999;pointer-events:none;display:flex;flex-direction:column;align-items:center}
+.notification{background:rgba(255,255,255,0.97);backdrop-filter:blur(30px) saturate(180%);color:#1c1c1e;padding:14px 18px;border-radius:22px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.45),0 0 0 0.5px rgba(255,255,255,0.15),0 2px 8px rgba(0,212,255,0.08);animation:slideIn .5s cubic-bezier(0.16,1,0.3,1);width:88%;max-width:340px}
+.notification img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.06)}
+.notification .notif-text strong{display:block;font-size:13px;font-weight:700;letter-spacing:-0.2px}
+.notification .notif-text span{font-size:12px;color:var(--text-dim)}
+
+.screen{width:92%;max-width:420px;display:none;padding:80px 0 20px;position:relative;z-index:1}
+.active{display:block;animation:fadeIn .6s cubic-bezier(0.16,1,0.3,1)}
+
+.main-card{background:var(--card-bg);backdrop-filter:blur(40px) saturate(150%);padding:36px 28px;border-radius:32px;border:1px solid var(--card-border);text-align:center;box-shadow:0 32px 64px rgba(0,0,0,0.6),0 0 0 0.5px rgba(255,255,255,0.04),inset 0 1px 0 rgba(255,255,255,0.06),inset 0 -1px 0 rgba(0,0,0,0.3);position:relative;overflow:hidden}
+.main-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(0,212,255,0.5) 30%,rgba(0,145,255,0.3) 70%,transparent 95%)}
+.main-card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 180deg at 50% 50%,transparent 0deg,rgba(0,212,255,0.02) 60deg,transparent 120deg);animation:cardGlow 12s linear infinite;pointer-events:none}
+@keyframes cardGlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.logo-container{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px;position:relative;z-index:1}
+.logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--primary-glow),var(--primary-deep));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 8px 24px rgba(0,212,255,0.3),inset 0 1px 0 rgba(255,255,255,0.2);position:relative}
+.logo-icon::after{content:'';position:absolute;inset:-3px;border-radius:18px;background:linear-gradient(135deg,rgba(0,212,255,0.3),transparent 60%);z-index:-1;filter:blur(8px)}
+.logo-text h2{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;letter-spacing:-0.5px;background:linear-gradient(135deg,#fff 30%,var(--primary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-text span{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;font-weight:600}
+
+.badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(40,205,65,0.12),rgba(40,205,65,0.06));color:var(--secondary);padding:6px 14px;border-radius:20px;font-size:10.5px;font-weight:700;margin-top:8px;border:1px solid rgba(40,205,65,0.18);text-transform:uppercase;letter-spacing:1px;position:relative;z-index:1}
+.badge i{font-size:8px;animation:badgePulse 2s ease-in-out infinite}
+@keyframes badgePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+
+/* Star rating */
+.rating-block{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-size:11px;color:var(--text-gray);position:relative;z-index:1}
+.rating-block .stars{color:var(--gold);letter-spacing:1px;font-size:13px;text-shadow:0 0 8px rgba(212,168,83,0.4)}
+.rating-block strong{color:#fff;font-weight:700}
+
+.amount-display{margin:24px 0;padding:28px 22px;background:linear-gradient(145deg,rgba(0,212,255,0.06),rgba(0,102,204,0.03),rgba(0,212,255,0.02));border-radius:24px;border:1px solid rgba(0,212,255,0.1);position:relative;z-index:1;overflow:hidden}
+.amount-display::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,212,255,0.08) 0%,transparent 60%);pointer-events:none}
+.amount-display .label{font-size:10.5px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2.5px;font-weight:700;margin-bottom:10px;position:relative}
+.amount-display .value{font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-2px;background:linear-gradient(135deg,#fff 20%,var(--primary) 60%,var(--primary-glow) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative}
+.amount-display .currency-tag{display:inline-block;margin-top:8px;font-size:11px;color:var(--primary);background:rgba(0,212,255,0.08);padding:4px 10px;border-radius:8px;font-weight:600;letter-spacing:.5px}
+
+.spinner-container{position:relative;width:64px;height:64px;margin:28px auto}
+.spinner{width:64px;height:64px;border:3px solid rgba(255,255,255,0.04);border-left-color:var(--primary);border-top-color:var(--primary);border-radius:50%;animation:spin .8s cubic-bezier(0.5,0,0.5,1) infinite}
+.spinner-inner{position:absolute;inset:8px;border:2px solid transparent;border-right-color:rgba(0,212,255,0.3);border-bottom-color:rgba(0,212,255,0.3);border-radius:50%;animation:spin 1.2s cubic-bezier(0.5,0,0.5,1) infinite reverse}
+.spinner-dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:8px;height:8px;background:var(--primary);border-radius:50%;box-shadow:0 0 12px var(--primary)}
+
+/* RECEIPT — premium bank style */
+.receipt{background:linear-gradient(180deg,#fafafa 0%,#eef0f3 100%);color:#1c1c1e;border-radius:18px;padding:0;text-align:left;margin-top:20px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.03),0 8px 28px rgba(0,0,0,0.25);position:relative;z-index:1;overflow:hidden;font-family:'Inter',sans-serif}
+/* Bordas tracejadas tipo recibo */
+.receipt::before{content:'';position:absolute;top:0;left:0;right:0;height:14px;background:radial-gradient(circle at 7px 14px,transparent 6px,#fafafa 6.5px);background-size:14px 14px;background-position:0 -7px}
+.receipt::after{content:'';position:absolute;bottom:0;left:0;right:0;height:14px;background:radial-gradient(circle at 7px 0,transparent 6px,#eef0f3 6.5px);background-size:14px 14px}
+.receipt-inner{padding:28px 22px 32px;position:relative}
+/* SELO VALIDADO em diagonal */
+.receipt-inner::before{content:'✓ VALIDADO';position:absolute;top:50%;right:-30px;transform:translateY(-50%) rotate(-18deg);font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:900;color:rgba(40,205,65,0.10);letter-spacing:3px;border:4px solid rgba(40,205,65,0.10);padding:8px 16px;border-radius:8px;pointer-events:none;white-space:nowrap}
+.receipt-bank-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1.5px dashed #c7c7cc;margin-bottom:14px;position:relative;z-index:2}
+.receipt-bank-logo{display:flex;align-items:center;gap:10px}
+.receipt-bank-logo .bank-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--primary-deep));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;box-shadow:0 4px 10px rgba(0,102,204,0.25)}
+.receipt-bank-logo .bank-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#1c1c1e;line-height:1.1}
+.receipt-bank-logo .bank-sub{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-top:2px}
+.receipt-op-num{text-align:right;font-family:'JetBrains Mono',monospace}
+.receipt-op-num .op-label{font-size:8px;color:#8e8e93;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.receipt-op-num .op-id{font-size:11px;font-weight:700;color:#1c1c1e;margin-top:2px}
+.receipt-title-row{text-align:center;margin-bottom:14px;position:relative;z-index:2}
+.receipt-title-row h4{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#1c1c1e;text-transform:uppercase;letter-spacing:2px;display:inline-flex;align-items:center;gap:8px}
+.receipt-title-row h4 i{color:var(--secondary);font-size:14px}
+.receipt-datetime{text-align:center;font-size:10.5px;color:#636366;margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:.3px;position:relative;z-index:2}
+.receipt-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e8e8ed;padding:12px 0;font-size:13px;position:relative;z-index:2}
+.receipt-row:last-of-type{border-bottom:none}
+.receipt-label{color:#8e8e93;font-weight:500;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+.receipt-value{font-weight:700;text-align:right;color:#1c1c1e;font-family:'Space Grotesk',sans-serif;letter-spacing:-0.2px;font-size:13px;max-width:60%;word-break:break-word}
+.receipt-value.highlight{color:var(--secondary-glow);font-size:18px;font-weight:800}
+/* QR + Hash footer */
+.receipt-footer{margin-top:16px;padding-top:14px;border-top:1.5px dashed #c7c7cc;display:flex;align-items:center;gap:14px;position:relative;z-index:2}
+.receipt-qr{width:64px;height:64px;background:#fff;border-radius:8px;padding:5px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+.receipt-qr svg{width:100%;height:100%;display:block}
+.receipt-auth{flex:1;min-width:0}
+.receipt-auth .auth-label{font-size:9px;color:#8e8e93;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;display:flex;align-items:center;gap:5px}
+.receipt-auth .auth-label i{color:var(--secondary)}
+.receipt-auth .auth-name{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#1c1c1e;margin-top:3px}
+.receipt-auth .auth-hash{font-family:'JetBrains Mono',monospace;font-size:9px;color:#636366;margin-top:4px;word-break:break-all;letter-spacing:.2px}
+.receipt-trust-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid #e8e8ed;position:relative;z-index:2}
+.receipt-trust-row .trust-item{font-size:9px;color:#8e8e93;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:4px}
+.receipt-trust-row .trust-item i{color:var(--primary-deep);font-size:11px}
+
+.input-group{margin-bottom:14px;position:relative}
+.input-group i.fa-icon{position:absolute;left:19px;top:50%;transform:translateY(-50%);color:#3a3a3c;font-size:17px;transition:all .4s cubic-bezier(0.16,1,0.3,1);z-index:2}
+.input-group:focus-within i.fa-icon{color:var(--primary);transform:translateY(-50%) scale(1.1)}
+.input-group.filled i.fa-icon{color:var(--primary)}
+input{width:100%;padding:18px 16px 18px 54px;background:rgba(26,26,29,0.8);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,0.06);border-radius:18px;color:#fff;box-sizing:border-box;font-size:15px;font-family:'Inter',sans-serif;font-weight:500;outline:none;transition:all .4s cubic-bezier(0.16,1,0.3,1)}
+input:focus{border-color:rgba(0,212,255,0.5);box-shadow:0 0 0 4px rgba(0,212,255,0.08),0 0 20px rgba(0,212,255,0.06);background:rgba(26,26,29,1)}
+input::placeholder{color:#3a3a3c;font-weight:400}
+input.filled{border-color:rgba(0,212,255,0.35);background:rgba(0,212,255,0.06)}
+
+.btn-confirm{width:100%;padding:20px;background:linear-gradient(135deg,var(--primary),var(--primary-glow),var(--primary-deep));background-size:200% 200%;animation:gradientShift 4s ease infinite;border:none;border-radius:20px;color:#fff;font-weight:800;font-size:14px;cursor:pointer;margin-top:14px;text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;position:relative;overflow:hidden;transition:all .3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 8px 32px rgba(0,212,255,0.25),inset 0 1px 0 rgba(255,255,255,0.2);z-index:1}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.btn-confirm:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,212,255,0.35),inset 0 1px 0 rgba(255,255,255,0.25)}
+.btn-confirm:active{transform:translateY(0);box-shadow:0 4px 16px rgba(0,212,255,0.2)}
+.btn-confirm::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:shimmer 3s infinite}
+.btn-confirm .btn-content{display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:2}
+.btn-confirm .btn-content i{font-size:16px;transition:transform .3s}
+.btn-confirm:hover .btn-content i{transform:translateX(3px)}
+.btn-success{background:linear-gradient(135deg,var(--secondary),var(--secondary-glow),#179c2d);background-size:200% 200%;box-shadow:0 8px 32px rgba(40,205,65,0.25),inset 0 1px 0 rgba(255,255,255,0.2)}
+.btn-success:hover{box-shadow:0 16px 40px rgba(40,205,65,0.35),inset 0 1px 0 rgba(255,255,255,0.25)}
+a.btn-confirm{display:block;text-decoration:none;text-align:center}
+
+.security-box{background:linear-gradient(135deg,rgba(255,214,10,0.06),rgba(255,214,10,0.02));border:1px solid rgba(255,214,10,0.12);padding:18px;border-radius:18px;margin:18px 0;display:flex;align-items:flex-start;gap:14px;text-align:left;position:relative;z-index:1}
+.security-box i{color:var(--warning);font-size:20px;margin-top:1px;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(255,214,10,0.3))}
+.security-box p{margin:0;font-size:12.5px;color:var(--text-light);line-height:1.7}
+.security-box strong{color:#fff;font-weight:700}
+
+/* Garantia 100% */
+.guarantee-box{background:linear-gradient(135deg,rgba(40,205,65,0.08),rgba(40,205,65,0.02));border:1px solid rgba(40,205,65,0.18);border-radius:16px;padding:14px 16px;margin:14px 0;display:flex;align-items:center;gap:12px;text-align:left;position:relative;z-index:1}
+.guarantee-box .g-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--secondary),var(--secondary-glow));display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0;box-shadow:0 4px 12px rgba(40,205,65,0.3)}
+.guarantee-box .g-text{font-size:11.5px;color:var(--text-light);line-height:1.5}
+.guarantee-box .g-text strong{color:#fff;font-weight:700}
+
+/* Atendente humano */
+.agent-box{background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(0,212,255,0.02));border:1px solid rgba(0,212,255,0.15);border-radius:18px;padding:14px 16px;margin:16px 0;display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.agent-avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#3a4a6b,#1d2942);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:'Space Grotesk',sans-serif;flex-shrink:0;position:relative;border:2px solid rgba(0,212,255,0.3)}
+.agent-avatar::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;background:var(--secondary);border-radius:50%;border:2.5px solid #0c0c10;box-shadow:0 0 8px rgba(40,205,65,0.6)}
+.agent-info{flex:1;min-width:0;text-align:left}
+.agent-info .agent-name{font-size:13px;font-weight:700;color:#fff;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;gap:5px}
+.agent-info .agent-name .verified-mini{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;background:var(--primary);border-radius:50%;font-size:7px;color:#fff}
+.agent-info .agent-role{font-size:10px;color:var(--text-gray);margin-top:1px;font-weight:500;letter-spacing:.3px}
+.agent-info .agent-status{font-size:10px;color:var(--secondary);margin-top:3px;display:flex;align-items:center;gap:5px;font-weight:600}
+.agent-info .agent-status .ag-dot{width:6px;height:6px;background:var(--secondary);border-radius:50%;box-shadow:0 0 6px var(--secondary);animation:pulse 2s infinite}
+
+/* Depoimento */
+.testimonial-box{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:14px 16px;margin:14px 0;text-align:left;position:relative;z-index:1}
+.testimonial-box .quote{font-size:12.5px;color:var(--text-light);line-height:1.5;font-style:italic}
+.testimonial-box .quote::before{content:'"';color:var(--primary);font-size:22px;font-weight:700;line-height:0;margin-right:3px}
+.testimonial-box .author{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.testimonial-box .author-name{font-size:11px;color:#fff;font-weight:700}
+.testimonial-box .author-stars{color:var(--gold);font-size:11px;letter-spacing:1px}
+
+.total-box{background:linear-gradient(145deg,rgba(40,205,65,0.1),rgba(40,205,65,0.03));border:1px solid rgba(40,205,65,0.12);border-radius:22px;padding:24px;margin:18px 0;text-align:center;position:relative;z-index:1;overflow:hidden}
+.total-box::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(40,205,65,0.08) 0%,transparent 60%);pointer-events:none}
+.total-box .label{font-size:10px;color:var(--text-gray);text-transform:uppercase;letter-spacing:2.5px;font-weight:700}
+.total-box .value{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;color:var(--secondary);margin-top:6px;letter-spacing:-1px;text-shadow:0 0 30px rgba(40,205,65,0.2);position:relative}
+.total-box .value .euro-anim{display:inline-block;animation:moneyBounce 2s ease-in-out infinite}
+@keyframes moneyBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+.timer-box{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0;padding:14px 16px;background:linear-gradient(135deg,rgba(255,69,58,0.12),rgba(255,69,58,0.04));border-radius:14px;border:1px solid rgba(255,69,58,0.2);position:relative;z-index:1;animation:urgentPulse 2s ease-in-out infinite}
+@keyframes urgentPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,69,58,0.15)}50%{box-shadow:0 0 0 8px rgba(255,69,58,0)}}
+.timer-box i{color:var(--danger);animation:pulse 1.5s ease-in-out infinite;font-size:15px}
+.timer{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--danger);font-size:18px;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.timer-label{font-size:12px;color:var(--text-gray);font-weight:500}
+
+.status-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px;position:relative;z-index:1}
+.status-icon.success{background:linear-gradient(135deg,rgba(40,205,65,0.15),rgba(40,205,65,0.05));color:var(--secondary);border:2px solid rgba(40,205,65,0.2);box-shadow:0 0 30px rgba(40,205,65,0.1);animation:statusPop .6s cubic-bezier(0.16,1,0.3,1)}
+.status-icon.warning{background:linear-gradient(135deg,rgba(255,214,10,0.15),rgba(255,214,10,0.05));color:var(--warning);border:2px solid rgba(255,214,10,0.2);box-shadow:0 0 30px rgba(255,214,10,0.08);animation:statusPop .6s cubic-bezier(0.16,1,0.3,1)}
+@keyframes statusPop{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+.screen-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px;background:linear-gradient(135deg,#fff 60%,rgba(255,255,255,0.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.screen-subtitle{font-size:13px;color:var(--text-gray);line-height:1.6;margin-bottom:18px;position:relative;z-index:1;font-weight:400}
+
+.card-footer{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:#3a3a3c;position:relative;z-index:1;flex-wrap:wrap}
+.card-footer i{color:var(--secondary);font-size:11px;filter:drop-shadow(0 0 4px rgba(40,205,65,0.3))}
+
+/* Trust badges row */
+.trust-badges{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:1}
+.trust-badge{font-size:9px;color:var(--text-dim);font-weight:700;padding:5px 9px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:8px;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:4px}
+.trust-badge i{color:var(--primary);font-size:10px}
+
+.progress-steps{display:flex;justify-content:center;gap:8px;margin-bottom:24px;position:relative;z-index:1}
+.step-dot{width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.06);transition:all .5s cubic-bezier(0.16,1,0.3,1)}
+.step-dot.active{background:linear-gradient(90deg,var(--primary),var(--primary-glow));width:48px;box-shadow:0 0 12px rgba(0,212,255,0.3)}
+.step-dot.done{background:var(--secondary)}
+
+.styled-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);margin:16px 0;position:relative;z-index:1}
+
+.live-indicator{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--text-dim);margin-top:12px;position:relative;z-index:1}
+.live-dot{width:6px;height:6px;background:var(--secondary);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 8px rgba(40,205,65,0.4)}
+
+/* Confetti */
+.confetti{position:fixed;width:8px;height:14px;top:-20px;z-index:9996;pointer-events:none;opacity:0;animation:confettiFall 2.8s cubic-bezier(0.2,0.6,0.4,1) forwards}
+@keyframes confettiFall{0%{opacity:0;transform:translateY(-30px) rotate(0)}5%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateY(-100px) scale(0.95);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes shimmer{to{left:100%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
 </head>
 <body>
+
+<!-- TOP SECURITY BAR -->
+<div class="top-bar">
+  <div class="ssl-info"><i class="fas fa-lock"></i><span>Ligação SSL 256-bit</span></div>
+  <div class="ip-info">85.***.***.42 — Lisboa, PT</div>
+  <div class="sys-status"><span class="sys-dot"></span><span>Sistema online</span></div>
+</div>
+
+<!-- LIVE USERS BAR -->
+<div class="live-users-bar">
+  <span class="live-pulse"></span>
+  <span><strong id="liveCount">247</strong> pessoas a levantar fundos neste momento</span>
+</div>
 
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 <div id="notification-container"></div>
 
-<!-- ECRÃ 1 -->
-<div class="screen active" id="screen-1">
-    <div class="main-card">
-        <div class="progress-steps"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div></div>
-        <div class="logo-container">
-            <div class="logo-icon"><i class="fas fa-bolt" style="color:#fff"></i></div>
-            <div class="logo-text" style="text-align:left">
-                <h2>MONAIA PAGAMENTOS</h2><span>Sistema Financeiro</span>
+<!-- ============ ECRÃ 1 — DADOS ============ -->
+<div id="screen1" class="screen active">
+  <div class="main-card">
+    <div class="progress-steps">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="logo-container">
+      <div class="logo-icon"><i class="fas fa-bolt" style="color:#fff"></i></div>
+      <div class="logo-text" style="text-align:left">
+        <h2>MONAIA PAGAMENTOS</h2>
+        <span>Sistema Financeiro PT</span>
+      </div>
+    </div>
+    <div class="badge"><i class="fas fa-circle"></i> LEVANTAMENTO INSTANTÂNEO DISPONÍVEL</div>
+    <div class="rating-block">
+      <span class="stars">★★★★★</span>
+      <span><strong>4.9/5</strong> · 18.347 avaliações</span>
+    </div>
+
+    <div class="amount-display">
+      <div class="label">Valor Total Disponível</div>
+      <div class="value">€ 2.000,00</div>
+      <span class="currency-tag">Transferência MB WAY / Multibanco</span>
+    </div>
+
+    <div class="input-group">
+      <i class="fas fa-user fa-icon"></i>
+      <input type="text" id="nome" placeholder="Nome completo">
+    </div>
+    <div class="input-group">
+      <i class="fas fa-id-card fa-icon"></i>
+      <input type="text" id="nif" placeholder="NIF (Número de Contribuinte)" maxlength="9">
+    </div>
+    <div class="input-group">
+      <i class="fas fa-mobile-alt fa-icon"></i>
+      <input type="text" id="iban" placeholder="IBAN ou nº MB WAY (+351)">
+    </div>
+
+    <button class="btn-confirm" onclick="goToScreen2()">
+      <span class="btn-content">Solicitar Levantamento <i class="fas fa-arrow-right"></i></span>
+    </button>
+
+    <div class="trust-badges">
+      <span class="trust-badge"><i class="fas fa-shield-alt"></i> SIBS</span>
+      <span class="trust-badge"><i class="fas fa-university"></i> Banco de Portugal</span>
+      <span class="trust-badge"><i class="fab fa-cc-visa"></i> Visa</span>
+      <span class="trust-badge"><i class="fas fa-mobile-alt"></i> MB WAY</span>
+    </div>
+
+    <div class="card-footer">
+      <i class="fas fa-shield-alt"></i>
+      Protegido por encriptação ponta a ponta
+    </div>
+  </div>
+</div>
+
+<!-- ============ ECRÃ 2 — VALIDAÇÃO ============ -->
+<div id="screen2" class="screen">
+  <div class="main-card">
+    <div class="progress-steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <div class="spinner-inner"></div>
+      <div class="spinner-dot"></div>
+    </div>
+    <h2 class="screen-title">A validar dados bancários...</h2>
+    <p class="screen-subtitle">Estamos a verificar as suas informações junto do <strong style="color:#fff">SIBS</strong> e do <strong style="color:#fff">Banco de Portugal</strong>. Não feche esta página.</p>
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      Ligação ativa com servidores seguros
+    </div>
+    <div class="styled-divider"></div>
+    <div class="card-footer">
+      <i class="fas fa-lock"></i>
+      Ligação segura com servidores oficiais
+    </div>
+  </div>
+</div>
+
+<!-- ============ ECRÃ 3 — COMPROVATIVO PREMIUM ============ -->
+<div id="screen3" class="screen">
+  <div class="main-card">
+    <div class="progress-steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="status-icon success"><i class="fas fa-check"></i></div>
+    <h2 class="screen-title">Dados Verificados!</h2>
+    <p class="screen-subtitle">Confirme as informações do seu levantamento abaixo.</p>
+
+    <div class="receipt">
+      <div class="receipt-inner">
+        <div class="receipt-bank-header">
+          <div class="receipt-bank-logo">
+            <div class="bank-icon"><i class="fas fa-bolt"></i></div>
+            <div>
+              <div class="bank-name">MONAIA PAGAMENTOS</div>
+              <div class="bank-sub">Instituição Autorizada SIBS</div>
             </div>
+          </div>
+          <div class="receipt-op-num">
+            <div class="op-label">Operação</div>
+            <div class="op-id" id="opNumber">#PT-2847291-MB</div>
+          </div>
         </div>
-        <div class="badge"><i class="fas fa-circle"></i> LEVANTAMENTO INSTANTÂNEO DISPONÍVEL</div>
-        <div class="amount-display">
-            <div class="label">Valor Total Disponível</div>
-            <div class="value">€ 2.000,00</div>
-            <div class="currency-tag">Transferência MB WAY</div>
+
+        <div class="receipt-title-row">
+          <h4><i class="fas fa-check-circle"></i> Comprovativo de Levantamento</h4>
         </div>
-        <div class="input-group"><i class="fas fa-user fa-icon"></i><input type="text" id="nome" placeholder="Nome completo"></div>
-        <div class="input-group"><i class="fas fa-id-card fa-icon"></i><input type="text" id="nif" placeholder="NIF (Número de Contribuinte)"></div>
-        <div class="input-group"><i class="fas fa-mobile-alt fa-icon"></i><input type="text" id="iban" placeholder="IBAN ou nº MB WAY (+351)"></div>
-        <button class="btn-confirm" onclick="goToScreen(2)"><span class="btn-content">Solicitar Pagamento <i class="fas fa-arrow-right"></i></span></button>
-        <div class="card-footer"><i class="fas fa-shield-alt"></i> Protegido por encriptação ponta a ponta</div>
+        <div class="receipt-datetime" id="receiptDate">19/04/2026 às 14:32:18 (WET)</div>
+
+        <div class="receipt-row">
+          <span class="receipt-label">Beneficiário</span>
+          <span class="receipt-value" id="recName">---</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">NIF</span>
+          <span class="receipt-value" id="recNif">---</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Banco de Destino</span>
+          <span class="receipt-value">SIBS Multibanco</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">IBAN / MB WAY</span>
+          <span class="receipt-value" id="recIban">---</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Valor Líquido</span>
+          <span class="receipt-value highlight">€ 2.000,00</span>
+        </div>
+
+        <div class="receipt-footer">
+          <div class="receipt-qr">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100" height="100" fill="#fff"/>
+              <g fill="#1c1c1e">
+                <!-- Cantos -->
+                <rect x="5" y="5" width="22" height="22"/><rect x="9" y="9" width="14" height="14" fill="#fff"/><rect x="13" y="13" width="6" height="6"/>
+                <rect x="73" y="5" width="22" height="22"/><rect x="77" y="9" width="14" height="14" fill="#fff"/><rect x="81" y="13" width="6" height="6"/>
+                <rect x="5" y="73" width="22" height="22"/><rect x="9" y="77" width="14" height="14" fill="#fff"/><rect x="13" y="81" width="6" height="6"/>
+                <!-- Pontos aleatórios -->
+                <rect x="35" y="10" width="4" height="4"/><rect x="42" y="10" width="4" height="4"/><rect x="50" y="14" width="4" height="4"/><rect x="58" y="10" width="4" height="4"/>
+                <rect x="35" y="22" width="4" height="4"/><rect x="46" y="22" width="4" height="4"/><rect x="54" y="22" width="4" height="4"/><rect x="62" y="22" width="4" height="4"/>
+                <rect x="10" y="35" width="4" height="4"/><rect x="22" y="38" width="4" height="4"/><rect x="34" y="34" width="4" height="4"/><rect x="42" y="38" width="4" height="4"/><rect x="50" y="34" width="4" height="4"/><rect x="58" y="38" width="4" height="4"/><rect x="66" y="34" width="4" height="4"/><rect x="78" y="38" width="4" height="4"/><rect x="86" y="34" width="4" height="4"/>
+                <rect x="14" y="46" width="4" height="4"/><rect x="26" y="46" width="4" height="4"/><rect x="38" y="50" width="4" height="4"/><rect x="46" y="46" width="4" height="4"/><rect x="58" y="50" width="4" height="4"/><rect x="70" y="46" width="4" height="4"/><rect x="82" y="50" width="4" height="4"/>
+                <rect x="10" y="58" width="4" height="4"/><rect x="22" y="62" width="4" height="4"/><rect x="34" y="58" width="4" height="4"/><rect x="46" y="62" width="4" height="4"/><rect x="58" y="58" width="4" height="4"/><rect x="70" y="62" width="4" height="4"/><rect x="82" y="58" width="4" height="4"/>
+                <rect x="38" y="74" width="4" height="4"/><rect x="50" y="78" width="4" height="4"/><rect x="62" y="74" width="4" height="4"/>
+                <rect x="38" y="86" width="4" height="4"/><rect x="46" y="82" width="4" height="4"/><rect x="58" y="86" width="4" height="4"/><rect x="70" y="82" width="4" height="4"/><rect x="82" y="86" width="4" height="4"/>
+              </g>
+            </svg>
+          </div>
+          <div class="receipt-auth">
+            <div class="auth-label"><i class="fas fa-shield-check"></i> Autenticado por</div>
+            <div class="auth-name">SIBS — Sociedade Interbancária de Serviços</div>
+            <div class="auth-hash">SHA-256: a8f3e9c1b274d692c5f8e37b9d4a82c0...92bc</div>
+          </div>
+        </div>
+
+        <div class="receipt-trust-row">
+          <div class="trust-item"><i class="fas fa-university"></i> Banco de Portugal</div>
+          <div class="trust-item"><i class="fas fa-shield-alt"></i> SIBS</div>
+          <div class="trust-item"><i class="fas fa-lock"></i> SSL 256</div>
+        </div>
+      </div>
     </div>
+
+    <button class="btn-confirm btn-success" onclick="goToScreen4()" style="margin-top:18px">
+      <span class="btn-content">Confirmar e Receber <i class="fas fa-check"></i></span>
+    </button>
+  </div>
 </div>
 
-<!-- ECRÃ 2 -->
-<div class="screen" id="screen-2">
-    <div class="main-card">
-        <div class="progress-steps"><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
-        <div class="spinner-container"><div class="spinner"><div class="spinner-dot"></div></div><div class="spinner-inner"></div></div>
-        <div class="screen-title">A validar dados bancários...</div>
-        <div class="screen-subtitle">Estamos a verificar as suas informações junto do Banco de Portugal. Não feche esta página.</div>
-        <div class="live-indicator"><span class="live-dot"></span> Ligação ativa com servidores seguros</div>
-        <div class="styled-divider"></div>
-        <div class="card-footer"><i class="fas fa-lock"></i> Ligação segura com servidores oficiais</div>
+<!-- ============ ECRÃ 4 — TAXA + CTA FINAL ============ -->
+<div id="screen4" class="screen">
+  <div class="main-card">
+    <div class="progress-steps">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
     </div>
-</div>
+    <div class="status-icon warning"><i class="fas fa-exclamation"></i></div>
+    <h2 class="screen-title">Validação Obrigatória</h2>
+    <p class="screen-subtitle">Para garantir a segurança do envio, o <strong style="color:#fff">SIBS</strong> exige uma <strong style="color:#fff">Taxa de Validação de IBAN</strong> contra fraudes.</p>
 
-<!-- ECRÃ 3 -->
-<div class="screen" id="screen-3">
-    <div class="main-card">
-        <div class="progress-steps"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div><div class="step-dot"></div></div>
-        <div class="status-icon success"><i class="fas fa-check"></i></div>
-        <div class="screen-title">Dados Verificados!</div>
-        <div class="screen-subtitle">Confirme os dados do seu levantamento abaixo.</div>
-        <div class="receipt">
-            <div class="receipt-header"><i class="fas fa-receipt"></i><h4>Comprovativo de Levantamento</h4></div>
-            <div class="receipt-row"><span class="receipt-label">Beneficiário</span><span class="receipt-value" id="r-nome">---</span></div>
-            <div class="receipt-row"><span class="receipt-label">Banco de Destino</span><span class="receipt-value">Millennium BCP</span></div>
-            <div class="receipt-row"><span class="receipt-label">IBAN / MB WAY</span><span class="receipt-value" id="r-iban">---</span></div>
-            <div class="receipt-row"><span class="receipt-label">Método</span><span class="receipt-value">MB WAY / Multibanco</span></div>
-            <div class="receipt-row"><span class="receipt-label">Valor Líquido</span><span class="receipt-value highlight">€ 2.000,00</span></div>
-        </div>
-        <button class="btn-confirm btn-success" onclick="goToScreen(4)"><span class="btn-content">Confirmar e Receber <i class="fas fa-check-circle"></i></span></button>
+    <!-- ATENDENTE HUMANO -->
+    <div class="agent-box">
+      <div class="agent-avatar">JS</div>
+      <div class="agent-info">
+        <div class="agent-name">João Silva <span class="verified-mini"><i class="fas fa-check"></i></span></div>
+        <div class="agent-role">Consultor Sénior · Monaia PT</div>
+        <div class="agent-status"><span class="ag-dot"></span> Online · responde em 2 min</div>
+      </div>
     </div>
-</div>
 
-<!-- ECRÃ 4 -->
-<div class="screen" id="screen-4">
-    <div class="main-card">
-        <div class="progress-steps"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot active"></div></div>
-        <div class="status-icon warning"><i class="fas fa-exclamation"></i></div>
-        <div class="screen-title">Validação Obrigatória</div>
-        <div class="screen-subtitle">Para garantir a segurança do envio, o Banco de Portugal exige uma Taxa de Validação de Conta contra fraudes.</div>
-        <div class="security-box">
-            <i class="fas fa-shield-alt"></i>
-            <p><strong>Taxa de Validação: € 5,00</strong> — exigida pelo Banco de Portugal para libertar transferências acima de € 500,00. Pagamento por <strong>MB WAY, Multibanco ou Cartão</strong>.</p>
-        </div>
-        <div class="security-box" style="background:linear-gradient(135deg,rgba(40,205,65,.06),rgba(40,205,65,.02));border-color:rgba(40,205,65,.15)">
-            <i class="fas fa-check-circle" style="color:var(--secondary)"></i>
-            <p>O valor de <strong>€ 5,00</strong> será <strong>TOTALMENTE REEMBOLSADO</strong> e somado ao seu saldo de <strong>€ 2.000,00</strong> imediatamente após o pagamento.</p>
-        </div>
-        <div class="total-box">
-            <div class="label">Vai receber na sua conta</div>
-            <div class="value">€ 2.005,00</div>
-        </div>
-        <div class="timer-box">
-            <i class="fas fa-clock"></i>
-            <span class="timer-label">O seu tempo expira em:</span>
-            <span class="timer" id="timer">10:00</span>
-        </div>
-        <a href="#" class="btn-confirm btn-success" id="finalBtn">
-            <span class="btn-content"><i class="fas fa-lock"></i> CONCLUIR VALIDAÇÃO E LEVANTAR</span>
-        </a>
+    <div class="security-box">
+      <i class="fas fa-shield-alt"></i>
+      <p><strong>Taxa de Validação: € 5,00</strong> — exigida pelo <strong>SIBS</strong> para libertar transferências superiores a € 1.000,00 ao abrigo da Diretiva PSD2 (Banco de Portugal).</p>
     </div>
+
+    <!-- DEPOIMENTO -->
+    <div class="testimonial-box">
+      <div class="quote">Recebi os € 2.000 em apenas 3 minutos! O processo foi super simples e a taxa foi reembolsada na hora. Recomendo!</div>
+      <div class="author">
+        <span class="author-name">— Maria S., Lisboa</span>
+        <span class="author-stars">★★★★★</span>
+      </div>
+    </div>
+
+    <!-- GARANTIA -->
+    <div class="guarantee-box">
+      <div class="g-icon"><i class="fas fa-undo-alt"></i></div>
+      <div class="g-text"><strong>Reembolso 100% garantido</strong> em até 24h se a transferência não for concluída.</div>
+    </div>
+
+    <div class="security-box" style="background:linear-gradient(135deg,rgba(40,205,65,0.08),rgba(40,205,65,0.02));border-color:rgba(40,205,65,0.18)">
+      <i class="fas fa-info-circle" style="color:var(--secondary);filter:drop-shadow(0 0 6px rgba(40,205,65,0.3))"></i>
+      <p>O valor de <strong>€ 5,00</strong> será <strong>TOTALMENTE REEMBOLSADO</strong> e somado ao seu saldo de <strong>€ 2.000,00</strong> imediatamente após o pagamento.</p>
+    </div>
+
+    <div class="total-box">
+      <div class="label">Vai receber na conta</div>
+      <div class="value"><span class="euro-anim">€</span> 2.005,00</div>
+    </div>
+
+    <div class="timer-box">
+      <i class="fas fa-clock"></i>
+      <span class="timer-label">O seu tempo expira em:</span>
+      <span class="timer" id="timer">10:00</span>
+    </div>
+
+    <a href="https://compraseguraonline.org.ua/c/0137cc09ea" class="btn-confirm btn-success" id="finalCta">
+      <span class="btn-content"><i class="fas fa-lock"></i> CONCLUIR VALIDAÇÃO E LEVANTAR</span>
+    </a>
+
+    <div class="trust-badges" style="margin-top:18px">
+      <span class="trust-badge"><i class="fas fa-shield-alt"></i> SIBS</span>
+      <span class="trust-badge"><i class="fas fa-university"></i> BdP</span>
+      <span class="trust-badge"><i class="fas fa-lock"></i> SSL 256</span>
+      <span class="trust-badge"><i class="fas fa-check-circle"></i> PSD2</span>
+    </div>
+
+    <div class="card-footer">
+      <i class="fas fa-shield-alt"></i>
+      Pagamento processado com segurança máxima
+    </div>
+  </div>
 </div>
 
 <script>
-    function goToScreen(n){
-        document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-        document.getElementById('screen-'+n).classList.add('active');
-        window.scrollTo({top:0,behavior:'smooth'});
-        if(n===2){
-            document.getElementById('r-nome').textContent=(document.getElementById('nome').value||'---').toUpperCase();
-            document.getElementById('r-iban').textContent=document.getElementById('iban').value||'---';
-            setTimeout(()=>goToScreen(3),3500);
-        }
-        if(n===4) startTimer();
-    }
-    document.querySelectorAll('input').forEach(inp=>{
-        inp.addEventListener('input',()=>{
-            inp.classList.toggle('filled',inp.value.trim().length>0);
-            inp.parentElement.classList.toggle('filled',inp.value.trim().length>0);
-        });
-    });
-    const notifs=[
-        {name:'Joana M.',msg:'recebeu € 2.000,00 via MB WAY',img:'https://i.pravatar.cc/100?img=47'},
-        {name:'Tiago P.',msg:'levantamento concluído com sucesso',img:'https://i.pravatar.cc/100?img=12'},
-        {name:'Inês R.',msg:'recebeu € 2.000,00 em Lisboa',img:'https://i.pravatar.cc/100?img=32'},
-        {name:'Rui A.',msg:'transferência aprovada no Porto',img:'https://i.pravatar.cc/100?img=15'},
-        {name:'Mariana S.',msg:'levantamento confirmado em Braga',img:'https://i.pravatar.cc/100?img=44'}
-    ];
-    let ni=0;
-    function showNotif(){
-        const n=notifs[ni%notifs.length];ni++;
-        const el=document.createElement('div');
-        el.className='notification';
-        el.innerHTML=`<img src="${n.img}" alt=""><div class="notif-text"><strong>${n.name}</strong><span>${n.msg}</span></div>`;
-        document.getElementById('notification-container').appendChild(el);
-        setTimeout(()=>el.remove(),4500);
-    }
-    setInterval(showNotif,6000);
-    setTimeout(showNotif,1500);
-    let t=600;
-    function startTimer(){
-        const el=document.getElementById('timer');
-        const iv=setInterval(()=>{t--;const m=String(Math.floor(t/60)).padStart(2,'0');const s=String(t%60).padStart(2,'0');el.textContent=`${m}:${s}`;if(t<=0)clearInterval(iv);},1000);
-    }
-</script>
+/* === Vibração háptica === */
+function buzz(ms){ if(navigator.vibrate){ try{ navigator.vibrate(ms); }catch(e){} } }
 
-</body></html>
+/* === Confetti === */
+function fireConfetti(){
+  const colors=['#00d4ff','#28cd41','#ffd60a','#0091ff','#d4a853'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay=(Math.random()*0.6)+'s';
+    c.style.animationDuration=(2+Math.random()*1.5)+'s';
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3500);
+  }
+}
+
+/* === Inputs preenchidos === */
+document.querySelectorAll('input').forEach(inp=>{
+  inp.addEventListener('input',()=>{
+    inp.classList.toggle('filled',inp.value.trim().length>0);
+    inp.parentElement.classList.toggle('filled',inp.value.trim().length>0);
+  });
+});
+
+/* === Live counter (sobe e desce) === */
+let liveN=247;
+setInterval(()=>{
+  liveN+=Math.floor(Math.random()*7)-3;
+  if(liveN<210)liveN=210;
+  if(liveN>312)liveN=312;
+  const el=document.getElementById('liveCount');
+  if(el)el.textContent=liveN;
+},2800);
+
+/* === Notificações sociais === */
+const notifs=[
+  {n:'Joana M.',v:'€ 2.000,00',c:'Lisboa'},
+  {n:'Tiago R.',v:'€ 2.000,00',c:'Porto'},
+  {n:'Beatriz F.',v:'€ 2.000,00',c:'Braga'},
+  {n:'André C.',v:'€ 2.000,00',c:'Coimbra'},
+  {n:'Inês P.',v:'€ 2.000,00',c:'Faro'},
+  {n:'Rui A.',v:'€ 2.000,00',c:'Aveiro'},
+  {n:'Sofia D.',v:'€ 2.000,00',c:'Setúbal'},
+  {n:'Pedro L.',v:'€ 2.000,00',c:'Leiria'},
+];
+function showNotif(){
+  const x=notifs[Math.floor(Math.random()*notifs.length)];
+  const el=document.createElement('div');
+  el.className='notification';
+  el.innerHTML=`
+    <img src="https://i.pravatar.cc/100?u=${encodeURIComponent(x.n)}" alt="">
+    <div class="notif-text">
+      <strong>${x.n} recebeu ${x.v}</strong>
+      <span>via MB WAY · ${x.c}, PT</span>
+    </div>`;
+  document.getElementById('notification-container').appendChild(el);
+  setTimeout(()=>{el.style.transition='all .5s';el.style.opacity='0';el.style.transform='translateY(-30px)';setTimeout(()=>el.remove(),500);},4500);
+}
+setTimeout(showNotif,2000);
+setInterval(showNotif,7000);
+
+/* === Navegação === */
+function goToScreen2(){
+  const nome=document.getElementById('nome').value.trim();
+  const nif=document.getElementById('nif').value.trim();
+  const iban=document.getElementById('iban').value.trim();
+  if(!nome||!nif||!iban){
+    alert('Por favor preencha todos os campos para continuar.');
+    return;
+  }
+  buzz(30);
+  document.getElementById('screen1').classList.remove('active');
+  document.getElementById('screen2').classList.add('active');
+  setTimeout(()=>{
+    document.getElementById('screen2').classList.remove('active');
+    document.getElementById('screen3').classList.add('active');
+    fireConfetti(); buzz([40,40,80]);
+    // Preenche comprovativo
+    document.getElementById('recName').textContent=nome;
+    document.getElementById('recNif').textContent=nif;
+    document.getElementById('recIban').textContent=iban.length>14?iban.substring(0,8)+'****'+iban.substring(iban.length-4):iban;
+    // Data atual em PT
+    const d=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    document.getElementById('receiptDate').textContent=`${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} às ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())} (WET)`;
+    // Operação aleatória
+    document.getElementById('opNumber').textContent='#PT-'+Math.floor(2000000+Math.random()*7999999)+'-MB';
+  },4000);
+}
+function goToScreen4(){
+  buzz(30);
+  document.getElementById('screen3').classList.remove('active');
+  document.getElementById('screen4').classList.add('active');
+  startTimer();
+}
+
+/* === Timer 10 min === */
+let tInt=null;
+function startTimer(){
+  let t=600;
+  const el=document.getElementById('timer');
+  if(tInt)clearInterval(tInt);
+  tInt=setInterval(()=>{
+    const m=Math.floor(t/60),s=t%60;
+    el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(t<=0){clearInterval(tInt);el.textContent='00:00';}
+    t--;
+  },1000);
+}
+
+/* CTA final — buzz antes de sair */
+document.getElementById('finalCta').addEventListener('click',()=>{ buzz([60,40,60]); });
+</script>
+</body>
+</html>
